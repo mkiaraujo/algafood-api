@@ -3,7 +3,6 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cidade;
-import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 import org.springframework.beans.BeanUtils;
@@ -19,9 +18,11 @@ import java.util.Optional;
 @RequestMapping("/cidades")
 public class CidadeController {
 
+    @SuppressWarnings("unused")
     @Autowired
     private CidadeRepository cidadeRepository;
 
+    @SuppressWarnings("unused")
     @Autowired
     private CadastroCidadeService cadastroCidadeService;
 
@@ -34,19 +35,15 @@ public class CidadeController {
     public ResponseEntity<Cidade> buscar(@PathVariable Long cidadeId) {
         Optional<Cidade> cidade = cidadeRepository.buscar(cidadeId);
 
-        if (cidade.isPresent()) {
-            return ResponseEntity.ok(cidade.get());
-        }
-        return ResponseEntity.notFound().build();
+        return cidade.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+
     }
 
     @PostMapping
     public ResponseEntity<?> adicionar(@RequestBody Cidade cidade) {
         try {
             cidade = cadastroCidadeService.salvar(cidade).get();
-
             return ResponseEntity.status(HttpStatus.CREATED).body(cidade);
-
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
