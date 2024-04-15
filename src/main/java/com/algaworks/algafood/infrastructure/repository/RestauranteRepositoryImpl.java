@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class RestauranteRepositoryImpl implements RestauranteRepository {
@@ -21,20 +22,20 @@ public class RestauranteRepositoryImpl implements RestauranteRepository {
     }
 
     @Override
-    public Restaurante buscar(Long id) {
-        return manager.find(Restaurante.class,id);
+    public Optional<Restaurante> buscar(Long id) {
+        return Optional.ofNullable(manager.find(Restaurante.class,id));
     }
 
     @Transactional
     @Override
-    public Restaurante salvar(Restaurante restaurante) {
-        return manager.merge(restaurante);
+    public Optional<Restaurante> salvar(Restaurante restaurante) {
+        return Optional.of(manager.merge(restaurante));
     }
 
     @Transactional
     @Override
     public void remover(Restaurante restaurante) {
-        restaurante = buscar(restaurante.getId());
+        restaurante = buscar(restaurante.getId()).get();
         manager.remove(restaurante);
     }
 }

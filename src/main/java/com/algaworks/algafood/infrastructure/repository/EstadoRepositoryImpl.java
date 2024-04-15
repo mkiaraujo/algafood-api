@@ -4,10 +4,12 @@ import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class EstadoRepositoryImpl implements EstadoRepository {
@@ -21,20 +23,23 @@ public class EstadoRepositoryImpl implements EstadoRepository {
     }
 
     @Override
-    public Estado buscar(Long id) {
-        return manager.find(Estado.class, id);
+    public Optional<Estado> buscar(Long id) {
+        return Optional.ofNullable(manager.find(Estado.class, id));
     }
 
     @Transactional
     @Override
-    public Estado salvar(Estado estado) {
-        return manager.merge(estado);
+    public Optional<Estado> salvar(Estado estado) {
+        return Optional.ofNullable(manager.merge(estado));
     }
 
     @Transactional
     @Override
-    public void remover(Estado estado) {
-        estado = manager.find(Estado.class, estado.getId());
-        manager.remove(estado);
+    public void remover(Long id) {
+        Optional<Estado> estado = buscar(id);
+        if (!estado.isPresent()) {
+            throw new EmptyResultDataAccessException(1);
+        }
+        manager.remove(estado.get());
     }
 }

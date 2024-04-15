@@ -25,8 +25,8 @@ public class IncluirRestauranteMain {
         holandes.setNome("Holandes");
         holandes.setTaxaFrete(new BigDecimal(5.25));
 
-        portugues = restauranteRepository.salvar(portugues);
-        holandes = restauranteRepository.salvar(holandes);
+        portugues = restauranteRepository.salvar(portugues).get();
+        holandes = restauranteRepository.salvar(holandes).get();
 
         System.out.println(portugues);
         System.out.println(holandes);
