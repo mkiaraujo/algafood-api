@@ -26,12 +26,12 @@ public class EstadoController {
 
     @GetMapping
     public ResponseEntity<List<Estado>> listar() {
-        return ResponseEntity.ok(estadoRepository.listar());
+        return ResponseEntity.ok(estadoRepository.findAll());
     }
 
     @GetMapping("/{estadoId}")
     public ResponseEntity<Estado> buscar(@PathVariable Long estadoId) {
-        Optional<Estado> estado = estadoRepository.buscar(estadoId);
+        Optional<Estado> estado = estadoRepository.findById(estadoId);
          if(estado.isPresent()) {
              return ResponseEntity.ok(estado.get());
          }
@@ -41,17 +41,17 @@ public class EstadoController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Estado adicionar(@RequestBody Estado estado) {
-        return cadastroEstadoService.salvar(estado).get();
+        return cadastroEstadoService.salvar(estado);
     }
 
     @PutMapping("/{estadoId}")
     public ResponseEntity<Estado> atualizar(@PathVariable Long estadoId, @RequestBody Estado estado) {
-        Optional<Estado> estadoAtual = estadoRepository.buscar(estadoId);
+        Optional<Estado> estadoAtual = estadoRepository.findById(estadoId);
 
         if (estadoAtual.isPresent()) {
             BeanUtils.copyProperties(estado, estadoAtual.get(), "id");
-            estadoAtual = cadastroEstadoService.salvar(estadoAtual.get());
-            return ResponseEntity.ok(estadoAtual.get());
+            Estado estadoAtualizado = cadastroEstadoService.salvar(estadoAtual.get());
+            return ResponseEntity.ok(estadoAtualizado);
         }
         return ResponseEntity.notFound().build();
     }
@@ -61,10 +61,10 @@ public class EstadoController {
         try {
            cadastroEstadoService.excluir(estadoId);
            return ResponseEntity.noContent().build();
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.notFound().build();
         } catch (EntidadeEmUsoException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (EntidadeNaoEncontradaException e) {
+            return ResponseEntity.status((HttpStatus.NOT_FOUND)).body(e.getMessage());
         }
     }
 

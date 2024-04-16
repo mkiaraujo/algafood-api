@@ -28,12 +28,12 @@ public class CidadeController {
 
     @GetMapping
     public ResponseEntity<List<Cidade>> listar() {
-        return ResponseEntity.ok(cidadeRepository.listar());
+        return ResponseEntity.ok(cidadeRepository.findAll());
     }
 
     @GetMapping("/{cidadeId}")
     public ResponseEntity<Cidade> buscar(@PathVariable Long cidadeId) {
-        Optional<Cidade> cidade = cidadeRepository.buscar(cidadeId);
+        Optional<Cidade> cidade = cidadeRepository.findById(cidadeId);
 
         return cidade.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 
@@ -42,7 +42,7 @@ public class CidadeController {
     @PostMapping
     public ResponseEntity<?> adicionar(@RequestBody Cidade cidade) {
         try {
-            cidade = cadastroCidadeService.salvar(cidade).get();
+            cidade = cadastroCidadeService.salvar(cidade);
             return ResponseEntity.status(HttpStatus.CREATED).body(cidade);
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -53,13 +53,13 @@ public class CidadeController {
     @PutMapping("/{cidadeId}")
     public ResponseEntity<?> atualizar(@PathVariable Long cidadeId, @RequestBody Cidade cidade) {
         try {
-            Optional<Cidade> cidadeAtual = cidadeRepository.buscar(cidadeId);
+            Optional<Cidade> cidadeAtual = cidadeRepository.findById(cidadeId);
 
             if (cidadeAtual.isPresent()) {
                 BeanUtils.copyProperties(cidade, cidadeAtual.get(), "id");
-                cidadeAtual = cadastroCidadeService.salvar(cidadeAtual.get());
+                Cidade Cidadesalva = cadastroCidadeService.salvar(cidadeAtual.get());
 
-                return ResponseEntity.ok(cidadeAtual.get());
+                return ResponseEntity.ok(Cidadesalva);
             }
             return ResponseEntity.notFound().build();
         } catch (EntidadeNaoEncontradaException e) {

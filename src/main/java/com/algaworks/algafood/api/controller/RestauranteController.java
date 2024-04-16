@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -30,13 +31,13 @@ public class RestauranteController {
 
     @GetMapping
     public ResponseEntity<List<Restaurante>> listar() {
-        List<Restaurante> restaurantes = restauranteRepository.listar();
+        List<Restaurante> restaurantes = restauranteRepository.findAll();
         return ResponseEntity.ok(restaurantes);
     }
 
     @GetMapping("/{restauranteId}")
     public ResponseEntity<Restaurante> buscar(@PathVariable Long restauranteId) {
-        Optional<Restaurante> restaurante = restauranteRepository.buscar(restauranteId);
+        Optional<Restaurante> restaurante = restauranteRepository.findById(restauranteId);
         if (restaurante.isPresent()) {
             return ResponseEntity.ok(restaurante.get());
         }
@@ -57,7 +58,7 @@ public class RestauranteController {
     @PutMapping("/{restauranteId}")
     public ResponseEntity<?> atualizar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
         try {
-            Optional<Restaurante> restauranteAtual = restauranteRepository.buscar(restauranteId);
+            Optional<Restaurante> restauranteAtual = restauranteRepository.findById(restauranteId);
 
             if (restauranteAtual.isPresent()){
                 BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id");
@@ -76,9 +77,9 @@ public class RestauranteController {
     @PatchMapping("/{restauranteId}")
     public ResponseEntity<?> atualizarParcial(@PathVariable Long restauranteId,
                                               @RequestBody Map<String, Object> campos){
-        Optional<Restaurante> restauranteAtual = restauranteRepository.buscar(restauranteId);
+        Optional<Restaurante> restauranteAtual = restauranteRepository.findById(restauranteId);
 
-        if (!restauranteAtual.isPresent()) {
+        if (restauranteAtual.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -96,19 +97,19 @@ public class RestauranteController {
             field.setAccessible(true);
 
             Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
-//            System.out.println(nomePropriedade + " = " + valorPropriedade + " = " + novoValor);
             ReflectionUtils.setField(field, restauranteDestino, novoValor);
         });
     }
 
     @DeleteMapping("/{restauranteId}")
-    public ResponseEntity<Cozinha> remover(@PathVariable Long restauranteId) {
-        Optional<Restaurante> restaurante = restauranteRepository.buscar(restauranteId);
-        if (restaurante.isPresent()) {
-            restauranteRepository.remover(restaurante.get());
+    public ResponseEntity<?> remover(@PathVariable Long restauranteId) {
+        try {
+            cadastroRestaurante.excluir(restauranteId);
             return ResponseEntity.noContent().build();
+        } catch (EntidadeNaoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (EntidadeEmUsoException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
-        return ResponseEntity.notFound().build();
     }
-
 }
