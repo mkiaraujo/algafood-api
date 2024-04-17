@@ -43,6 +43,28 @@ public class TesteController {
     @GetMapping("/restaurantes/por-nome")
     public List<Restaurante> restaurantePorNome(String nome, Long cozinhaId) {
 
-        return restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId);
+        return restauranteRepository.consultarPorNome(nome, cozinhaId);
+    }
+
+    @GetMapping("/restaurantes/primeiro-por-nome")
+    public Optional<Restaurante> primeiroRestaurantePorNome(String nome) {
+
+        return restauranteRepository.findFirstRestauranteByNomeContaining(nome);
+    }
+
+    @GetMapping("/restaurantes/primeiros2-por-nome")
+    public List<Restaurante> primeiros2RestaurantePorNome(String nome) {
+        return restauranteRepository.findTop2ByNomeContaining(nome);
+    }
+
+    @GetMapping("/cozinhas/exists")
+    public Boolean existsCozinhaPorNome(String nome) {
+
+        return cozinhaRepository.existsByNome(nome);
+    }
+
+    @GetMapping("/restaurantes/count-por-cozinha")
+    public int restaurantesCountPorCozinhaPorId(Long cozinhaId) {
+        return restauranteRepository.countByCozinhaId(cozinhaId);
     }
 }
