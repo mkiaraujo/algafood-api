@@ -3,6 +3,7 @@ insert into cozinha (id, nome) values (2, 'Indiana');
 
 insert into restaurante (id, nome, taxa_frete, cozinha_id) values (1, 'Madeiro', 15.30, 1);
 insert into restaurante (id, nome, taxa_frete, cozinha_id) values (2, 'Coco Bambu', 20.15, 2);
+insert into restaurante (id, nome, taxa_frete, cozinha_id) values (3, 'Tuk Tuk Comida Indiana', 0, 2);
 
 insert into forma_pagamento (id, descricao) values (1, "Cartão de Crédito");
 insert into forma_pagamento (id, descricao) values (2, "Cartão de Débito");
