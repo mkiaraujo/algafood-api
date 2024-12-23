@@ -20,6 +20,8 @@ insert into cidade (id, nome, estado_id) values (2, 'Taguatinga', 1);
 insert into cidade (id, nome, estado_id) values (3, 'Goiania', 2);
 insert into cidade (id, nome, estado_id) values (4, 'Valparaiso', 2);
 
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3);
+
 
 
 
