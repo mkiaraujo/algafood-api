@@ -1,6 +1,7 @@
 package com.algaworks.algafood.domain.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +19,7 @@ public class Cidade {
     @Column(nullable = false)
     private String nome;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(nullable = false)
     private Estado estado;

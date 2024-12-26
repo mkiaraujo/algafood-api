@@ -32,10 +32,6 @@ public class RestauranteController {
     @GetMapping
     public ResponseEntity<List<Restaurante>> listar() {
         List<Restaurante> restaurantes = restauranteRepository.findAll();
-
-        System.out.println("O nome da cozinha é");
-        restaurantes.get(0).getCozinha().getNome();
-
         return ResponseEntity.ok(restaurantes);
     }
 
