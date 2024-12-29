@@ -19,7 +19,6 @@ public interface RestauranteRepository
 
     @Query("from Restaurante r " +
             "left join fetch r.cozinha " +
-            "left join fetch r.formasPagamento " +
             "left join fetch r.endereco.cidade " +
             "left join fetch r.endereco.cidade.estado")
     List<Restaurante> findAll();

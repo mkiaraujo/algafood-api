@@ -32,6 +32,7 @@ public class RestauranteController {
     @GetMapping
     public ResponseEntity<List<Restaurante>> listar() {
         List<Restaurante> restaurantes = restauranteRepository.findAll();
+
         return ResponseEntity.ok(restaurantes);
     }
 
