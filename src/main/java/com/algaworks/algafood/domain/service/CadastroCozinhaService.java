@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class CadastroCozinhaService {
 
@@ -23,11 +25,16 @@ public class CadastroCozinhaService {
 
     public void excluir(Long cozinhaId) {
         try {
-           cozinhaRepository.deleteById(cozinhaId);
+//           cozinhaRepository.deleteById(cozinhaId);
+            Cozinha cozinha = cozinhaRepository.findById(cozinhaId).get();
+            cozinhaRepository.delete(cozinha);
 
-        } catch (EmptyResultDataAccessException e) {
+        } catch (NoSuchElementException e){
             throw new EntidadeNaoEncontradaException(
                     String.format("Não existe um cadastro de cozinha com código %d", cozinhaId));
+//        } catch (EmptyResultDataAccessException e) {
+//            throw new EntidadeNaoEncontradaException(
+//                    String.format("Não existe um cadastro de cozinha com código %d", cozinhaId));
         } catch (DataIntegrityViolationException e) {
            throw new EntidadeEmUsoException(
                    String.format("Cozinha de código %d não pode ser removida, pois está em uso", cozinhaId));

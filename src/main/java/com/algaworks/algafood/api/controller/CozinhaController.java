@@ -75,14 +75,9 @@ public class CozinhaController {
 //        }
 //    }
     @DeleteMapping("/{cozinhaId}")
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+//    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long cozinhaId) {
-        try {
             cadastroCozinha.excluir(cozinhaId);
-        } catch (EntidadeNaoEncontradaException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-//              throw new ServerWebInputException(e.getMessage());
-        }
     }
 
 }
