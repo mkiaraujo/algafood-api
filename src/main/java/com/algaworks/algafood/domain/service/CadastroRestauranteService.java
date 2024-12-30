@@ -16,6 +16,8 @@ import java.util.function.Supplier;
 @Service
 public class CadastroRestauranteService {
 
+    public static final String MSG_ESTADO_NAO_ENCONTRADO = "Restaurante de código %d não foi encontrado";
+    public static final String MSG_RESTAURANTE_ESTA_EM_USO = "Restaurante de código %d não pode ser removido, pois está em uso";
     @Autowired
     private RestauranteRepository restauranteRepository;
 
@@ -39,12 +41,18 @@ public class CadastroRestauranteService {
             restauranteRepository.deleteById(restauranteId);
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
-                    String.format("Restaurante de código %d não foi encontrado", restauranteId)
+                    String.format(MSG_ESTADO_NAO_ENCONTRADO, restauranteId)
             );
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
-                    String.format("Restaurante de código %d não pode ser removido, pois está em uso", restauranteId)
+                    String.format(MSG_RESTAURANTE_ESTA_EM_USO , restauranteId)
             );
         }
+    }
+
+    public Restaurante buscarOuFalhar(Long restauranteId) {
+        return restauranteRepository.findById(restauranteId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format(MSG_ESTADO_NAO_ENCONTRADO, restauranteId)));
     }
 }

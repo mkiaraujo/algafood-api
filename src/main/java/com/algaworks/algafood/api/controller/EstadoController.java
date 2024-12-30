@@ -30,12 +30,8 @@ public class EstadoController {
     }
 
     @GetMapping("/{estadoId}")
-    public ResponseEntity<Estado> buscar(@PathVariable Long estadoId) {
-        Optional<Estado> estado = estadoRepository.findById(estadoId);
-         if(estado.isPresent()) {
-             return ResponseEntity.ok(estado.get());
-         }
-         return ResponseEntity.notFound().build();
+    public Estado buscar(@PathVariable Long estadoId) {
+        return cadastroEstadoService.buscarOuFalhar(estadoId);
     }
 
     @PostMapping
@@ -45,15 +41,10 @@ public class EstadoController {
     }
 
     @PutMapping("/{estadoId}")
-    public ResponseEntity<Estado> atualizar(@PathVariable Long estadoId, @RequestBody Estado estado) {
-        Optional<Estado> estadoAtual = estadoRepository.findById(estadoId);
-
-        if (estadoAtual.isPresent()) {
-            BeanUtils.copyProperties(estado, estadoAtual.get(), "id");
-            Estado estadoAtualizado = cadastroEstadoService.salvar(estadoAtual.get());
-            return ResponseEntity.ok(estadoAtualizado);
-        }
-        return ResponseEntity.notFound().build();
+    public Estado atualizar(@PathVariable Long estadoId, @RequestBody Estado estado) {
+       Estado estadoAtual = cadastroEstadoService.buscarOuFalhar(estadoId);
+       BeanUtils.copyProperties(estado, estadoAtual, "id");
+       return cadastroEstadoService.salvar(estadoAtual);
     }
 
     @DeleteMapping("/{estadoId}")

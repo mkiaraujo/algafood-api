@@ -19,7 +19,7 @@ public class Cidade {
     @Column(nullable = false)
     private String nome;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne
     @JoinColumn(nullable = false)
     private Estado estado;
