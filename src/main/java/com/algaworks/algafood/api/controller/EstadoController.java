@@ -47,16 +47,10 @@ public class EstadoController {
        return cadastroEstadoService.salvar(estadoAtual);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{estadoId}")
-    public ResponseEntity<?> remover(@PathVariable Long estadoId) {
-        try {
-           cadastroEstadoService.excluir(estadoId);
-           return ResponseEntity.noContent().build();
-        } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.status((HttpStatus.NOT_FOUND)).body(e.getMessage());
-        }
+    public void remover(@PathVariable Long estadoId){
+        cadastroEstadoService.excluir(estadoId);
     }
 
 }
