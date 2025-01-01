@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.RestauranteEmUsoException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -44,8 +45,7 @@ public class CadastroRestauranteService {
         } catch (EmptyResultDataAccessException e) {
             throw new RestauranteNaoEncontradoException(restauranteId);
         } catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(
-                    String.format(MSG_RESTAURANTE_ESTA_EM_USO , restauranteId));
+            throw new RestauranteEmUsoException(restauranteId);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.service;
 
+import com.algaworks.algafood.domain.exception.CidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
@@ -18,7 +19,6 @@ import java.util.Optional;
 @Service
 public class CadastroCidadeService {
 
-    public static final String MSG_CIDADE_EM_USO = "Cidade de código %d não pode ser removida, pois está em uso";
     @Autowired
     private CidadeRepository cidadeRepository;
 
@@ -43,8 +43,7 @@ public class CadastroCidadeService {
         } catch (EmptyResultDataAccessException e) {
             throw new CidadeNaoEncontradaException(cidadeId);
         } catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(
-                    String.format(MSG_CIDADE_EM_USO , cidadeId));
+            throw new CidadeEmUsoException(cidadeId);
         }
     }
 
