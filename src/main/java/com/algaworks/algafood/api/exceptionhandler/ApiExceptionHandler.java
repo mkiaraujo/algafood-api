@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.exceptionhandler;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -44,9 +45,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException ex ,
         HttpHeaders headers , HttpStatusCode status , WebRequest request) {
-        String path = ex.getPath().stream()
-                .map(ref -> ref.getFieldName())
-                .collect(Collectors.joining("."));
+
+        String path = jsonPath(ex.getPath());
+
         ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
         String detail = String.format("A propriedade '%s' não existe. " +
                 "Corrija ou remova essa propriedade e tente novamente.", path);
@@ -57,9 +58,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex ,
             HttpHeaders headers , HttpStatusCode status , WebRequest request) {
 
-        String path = ex.getPath().stream()
-                        .map(ref -> ref.getFieldName())
-                        .collect(Collectors.joining("."));
+        String path = jsonPath(ex.getPath());
 
         ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
         String detail = String.format("A propriedade '%s' recebeu o valor '%s', " +
@@ -69,6 +68,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         Problem problem = createProblemBuilder((HttpStatus) status, problemType, detail).build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
+    }
+
+    public String jsonPath(List<JsonMappingException.Reference> references) {
+        return references.stream()
+                .map(ref -> ref.getFieldName())
+                .collect(Collectors.joining("."));
     }
 
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
