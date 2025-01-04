@@ -202,13 +202,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         if (body == null) {
             body = Problem.builder()
+                    .timestamp(LocalDateTime.now())
                     .status(statusCode.value())
                     .title(statusCode.toString())
+                    .userMessage(MSG_ERRO_GENERICO_USUARIO_FINAL)
                     .build();
         } else if (body instanceof String) {
             body = Problem.builder()
+                    .timestamp(LocalDateTime.now())
                     .status(statusCode.value())
                     .title((String) body)
+                    .userMessage(MSG_ERRO_GENERICO_USUARIO_FINAL)
                     .build();
         }
         return super.handleExceptionInternal(ex , body , headers , statusCode , request);
