@@ -118,8 +118,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
-    public ResponseEntity<?> handlerEntidadeNaoEncontradaException(EntidadeNaoEncontradaException ex,
-                                                                   WebRequest request) {
+    public ResponseEntity<?> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException ex,
+                                                                  WebRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         ProblemType problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
         String detail = ex.getMessage();
@@ -130,7 +130,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 status, request);
     }
     @ExceptionHandler(NegocioException.class)
-    public ResponseEntity<?> handlerNegocioException(NegocioException ex,
+    public ResponseEntity<?> handleNegocioException(NegocioException ex,
                                                     WebRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ProblemType problemType = ProblemType.ERRO_NEGOCIO;
@@ -143,7 +143,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(EntidadeEmUsoException.class)
-    public ResponseEntity<?> handlerEntidadeEmUsoException(EntidadeEmUsoException ex,
+    public ResponseEntity<?> handleEntidadeEmUsoException(EntidadeEmUsoException ex,
                                                           WebRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
         ProblemType problemType = ProblemType.ENTIDADE_EM_USO;
@@ -153,6 +153,25 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(),
                 status, request);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleRuntimeException(Exception ex, WebRequest request) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        ProblemType problemType = ProblemType.ERRO_DE_SISTEMA;
+        String detail = "Ocorreu um erro interno inesperado no sistema. Tente novamente e se o " +
+                "problema persistir, entre em contato com o administrador do sistema.";
+
+        /* Importante colocar o printStackTrace (pelo menos por enquanto, que não estamos fazendo logging)
+        * para mostrar a stacktrace no console.
+        * Se não fizer isso, voc~e não vai ver a stacktrace de exceptions que seriam importantes
+        * para você durante, especialmente na fase de desenvolvimento  */
+
+        ex.printStackTrace();
+
+        Problem problem = createProblemBuilder(status, problemType, detail).build();
+
+        return  handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
     @Override
