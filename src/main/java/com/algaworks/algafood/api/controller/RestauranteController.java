@@ -98,7 +98,8 @@ public class RestauranteController {
                 ReflectionUtils.setField(field, restauranteDestino, novoValor);
             });
         } catch (IllegalArgumentException e) {
-            Throwable rootCause = ExceptionUtils.getRootCause(e);
+//            Throwable rootCause = ExceptionUtils.getRootCause(e);
+            Throwable rootCause = e.getCause();
             throw new HttpMessageNotReadableException(e.getMessage(), rootCause, servletServerHttpRequest);
         }
     }
