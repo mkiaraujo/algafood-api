@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.exceptionhandler;
 
+import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -38,40 +39,40 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @Autowired
     private MessageSource messageSource;
 
+    @ExceptionHandler(ValidacaoException.class)
+    public ResponseEntity<?> handleValidacaoException(ValidacaoException ex, WebRequest request) {
+        return handleValidadorDuplo(ex, ex.getBindingResult(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex ,
-        HttpHeaders headers , HttpStatusCode status , WebRequest request) {
+                                                                  HttpHeaders headers , HttpStatusCode status , WebRequest request) {
+        return handleValidadorDuplo(ex, ex.getBindingResult(), headers, status, request);
+    }
+
+    private ResponseEntity<Object> handleValidadorDuplo(Exception ex, BindingResult bindingResult,
+                HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         ProblemType problemType = ProblemType.DADOS_INVALIDOS;
-        String detail = String.format("Um ou mais campos estão inválidos. " +
-                "Faça o preenchimento correto e tente novamente.");
-
-        BindingResult bindingResult = ex.getBindingResult();
+        String detail = "Um ou mais campos estão inválidos. " +
+                "Faça o preenchimento correto e tente novamente.";
 
         List<Problem.Object> problemObjects = bindingResult.getAllErrors()
                 .stream()
                 .map(objectError -> {
                     String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
-
                     String name = objectError.getObjectName();
 
                     if (objectError instanceof FieldError) {
                         name = ((FieldError) objectError).getField();
                     }
-
-                    return Problem.Object.builder()
-                        .name(name)
-                        .userMessage(message)
-                        .build();
-                })
-                .collect(Collectors.toList());
-
+                    return Problem.Object.builder().name(name).userMessage(message).build();
+                }).collect(Collectors.toList());
         Problem problem = createProblemBuilder((HttpStatus) status, problemType, detail)
                 .userMessage(detail)
                 .objects(problemObjects)
                 .build();
-
-        return handleExceptionInternal(ex, problem, headers, status, request);
+        return handleExceptionInternal(ex, problem, new HttpHeaders(),status, request);
     }
 
     @Override
