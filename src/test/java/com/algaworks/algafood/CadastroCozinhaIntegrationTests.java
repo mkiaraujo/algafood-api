@@ -1,5 +1,7 @@
 package com.algaworks.algafood;
 
+import com.algaworks.algafood.domain.exception.CozinhaEmUsoException;
+import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 import jakarta.validation.ConstraintViolationException;
@@ -32,10 +34,26 @@ class CadastroCozinhaIntegrationTests {
         final Cozinha novaCozinha = new Cozinha();
         novaCozinha.setNome(null);
 
-        Assertions.assertThatThrownBy(() -> cadastroCozinha.salvar(novaCozinha)).isInstanceOf(ConstraintViolationException.class);
+        Assertions.assertThatThrownBy(() -> cadastroCozinha.salvar(novaCozinha))
+                .isInstanceOf(ConstraintViolationException.class);
 //        novaCozinha = cadastroCozinha.salvar(novaCozinha);
-
 
     }
 
+    @Test
+    public void deveFalhar_QuandoExcluirCozinhaEmUso() {
+        Long id = 1L;
+
+        Assertions.assertThatThrownBy(() -> cadastroCozinha.excluir(id))
+                .isInstanceOf(CozinhaEmUsoException.class);
+
+    }
+
+    @Test
+    public void deveFalhar_QuandoExcluirCozinhaInexistente() {
+        Long id = 10L;
+
+        Assertions.assertThatThrownBy(() -> cadastroCozinha.excluir(id))
+                .isInstanceOf(CozinhaNaoEncontradaException.class);
+    }
 }
