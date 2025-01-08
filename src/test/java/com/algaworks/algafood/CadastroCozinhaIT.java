@@ -1,5 +1,7 @@
 package com.algaworks.algafood;
 
+import static org.hamcrest.Matchers.*;
+
 import com.algaworks.algafood.domain.exception.CozinhaEmUsoException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
@@ -8,6 +10,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import jakarta.validation.ConstraintViolationException;
 import org.assertj.core.api.Assertions;
+//import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -83,6 +86,21 @@ class CadastroCozinhaIT {
                 .then()
                     .statusCode(HttpStatus.OK.value());
     }
+     @Test
+        public void deveConter4Cozinhas_QuandoConsultarCozinhas() {
+            RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+
+            RestAssured
+                    .given()
+                        .basePath("/cozinhas")
+                        .port(port)
+                        .accept(ContentType.JSON)
+                    .when()
+                        .get()
+                    .then()
+                        .body("", hasSize(4))
+                        .body("nome", hasItems("Indiana", "Tailandesa"));
+        }
 
 //    FIM TESTES DE API
 }
