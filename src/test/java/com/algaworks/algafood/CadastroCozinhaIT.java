@@ -11,6 +11,7 @@ import io.restassured.http.ContentType;
 import jakarta.validation.ConstraintViolationException;
 import org.assertj.core.api.Assertions;
 //import org.hamcrest.Matcher;
+import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,11 +30,16 @@ class CadastroCozinhaIT {
     @Autowired
     private CadastroCozinhaService cadastroCozinha;
 
+    @Autowired
+    private Flyway flyway;
+
     @BeforeEach
     public void setUp() {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         RestAssured.port = port;
         RestAssured.basePath = "/cozinhas";
+
+        flyway.migrate();
     }
 
 //    TESTES DE INTEGRAÇÃO
@@ -101,7 +107,7 @@ class CadastroCozinhaIT {
                     .when()
                         .get()
                     .then()
-//                        .body("", hasSize(4))
+                        .body("", hasSize(4))
                         .body("nome", hasItems("Indiana", "Tailandesa"));
      }
 
