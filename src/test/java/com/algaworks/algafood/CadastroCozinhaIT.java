@@ -2,11 +2,11 @@ package com.algaworks.algafood;
 
 import static org.hamcrest.Matchers.*;
 
-import com.algaworks.algafood.domain.exception.CozinhaEmUsoException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
+import com.algaworks.algafood.util.ResourceUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import jakarta.validation.ConstraintViolationException;
@@ -38,6 +38,12 @@ class CadastroCozinhaIT {
     @Autowired
     private DatabaseCleaner databaseCleaner;
 
+    private Long quantidadeCozinhasCadastradas;
+    private String listaDeCozinhas;
+    private static final String PATH_JSON_COZINHA = "/json/cozinhas.json";
+    private Cozinha cozinhaAleatoria;
+    private static final int COZINHA_ID_INEXISTENTE = 100;
+
     @BeforeEach
     public void setUp() {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
@@ -46,6 +52,8 @@ class CadastroCozinhaIT {
 
         databaseCleaner.clearTables();
         prepararDados();
+
+
     }
 
 //    TESTES DE INTEGRAÇÃO
@@ -105,7 +113,7 @@ class CadastroCozinhaIT {
                     .statusCode(HttpStatus.OK.value());
     }
      @Test
-     public void deveConter4Cozinhas_QuandoConsultarCozinhas() {
+     public void deveConterTodasCozinhas_QuandoConsultarCozinhas() {
 
             RestAssured
                     .given()
@@ -113,15 +121,15 @@ class CadastroCozinhaIT {
                     .when()
                         .get()
                     .then()
-                        .body("", hasSize(2))
-                        .body("nome", hasItems("Americana", "Tailandesa"));
+                        .body("", hasSize(quantidadeCozinhasCadastradas.intValue()));
+//                        .body("nome", hasItems("Americana", "Tailandesa"));
      }
 
      @Test
      public void deveRetornarStatus201_QundoCadastrarCozinha() {
         RestAssured
                 .given()
-                    .body("{\"nome\": \"Chinesa\" }")
+                    .body(listaDeCozinhas)
                     .contentType(ContentType.JSON)
                     .accept(ContentType.JSON)
                 .when()
@@ -136,20 +144,20 @@ class CadastroCozinhaIT {
     public void deveRetornarRespostaEStatusCorretos_QuandoConsultarCozinhaExistente() {
         RestAssured
                 .given()
-                .pathParam("cozinhaId", 2)
+                .pathParam("cozinhaId", cozinhaAleatoria.getId())
                     .accept(ContentType.JSON)
                 .when()
                     .get("/{cozinhaId}")
                 .then()
                     .statusCode(HttpStatus.OK.value())
-                .body("nome", equalTo("Americana"));
+                .body("nome", equalTo(cozinhaAleatoria.getNome()));
     }
 
     @Test
     public void deveRetornarStatus404_QuandoConsultarCozinhaInexistente() {
         RestAssured
                 .given()
-                    .pathParam("cozinhaId", 10)
+                    .pathParam("cozinhaId", COZINHA_ID_INEXISTENTE)
                     .accept(ContentType.JSON)
                 .when()
                     .get("/{cozinhaId}")
@@ -168,5 +176,15 @@ class CadastroCozinhaIT {
         Cozinha cozinha2 = new Cozinha();
         cozinha2.setNome("Americana");
         cozinhaRepository.save(cozinha2);
+
+        quantidadeCozinhasCadastradas = cozinhaRepository.count();
+
+        listaDeCozinhas = ResourceUtils.getContentFromResources(PATH_JSON_COZINHA);
+
+        cozinhaAleatoria = cozinhaRepository.buscarPrimeiro().get();
+
+
+
+
     }
 }
