@@ -93,7 +93,7 @@ class CadastroCozinhaIT {
                     .statusCode(HttpStatus.OK.value());
     }
      @Test
-        public void deveConter4Cozinhas_QuandoConsultarCozinhas() {
+     public void deveConter4Cozinhas_QuandoConsultarCozinhas() {
 
             RestAssured
                     .given()
@@ -103,7 +103,21 @@ class CadastroCozinhaIT {
                     .then()
 //                        .body("", hasSize(4))
                         .body("nome", hasItems("Indiana", "Tailandesa"));
-        }
+     }
+
+     @Test
+     public void deveRetornarStatus201_QundoCadastrarCozinha() {
+        RestAssured
+                .given()
+                    .body("{\"nome\": \"Chinesa\" }")
+                    .contentType(ContentType.JSON)
+                    .accept(ContentType.JSON)
+                .when()
+                    .post()
+                .then()
+                .statusCode(HttpStatus.CREATED.value());
+
+     }
 
 //    FIM TESTES DE API
 }
