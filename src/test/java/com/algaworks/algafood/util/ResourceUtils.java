@@ -9,7 +9,7 @@ import java.nio.charset.Charset;
 
 public class ResourceUtils {
 
-    public static String getContentFromResources(String resourceName) {
+    public static String getContentFromResource(String resourceName) {
         try {
             InputStream stream = ResourceUtils.class.getResourceAsStream(resourceName);
             return StreamUtils.copyToString(stream, Charset.forName("UTF-8"));

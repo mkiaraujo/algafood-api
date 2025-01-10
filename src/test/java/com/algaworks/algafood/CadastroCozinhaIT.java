@@ -76,18 +76,7 @@ class CadastroCozinhaIT {
 
         Assertions.assertThatThrownBy(() -> cadastroCozinha.salvar(novaCozinha))
                 .isInstanceOf(ConstraintViolationException.class);
-//        novaCozinha = cadastroCozinha.salvar(novaCozinha);
-
     }
-
-//    @Test
-//    public void deveFalhar_QuandoExcluirCozinhaEmUso() {
-//        Long id = 1L;
-//
-//        Assertions.assertThatThrownBy(() -> cadastroCozinha.excluir(id))
-//                .isInstanceOf(CozinhaEmUsoException.class);
-//
-//    }
 
     @Test
     public void deveFalhar_QuandoExcluirCozinhaInexistente() {
@@ -135,7 +124,7 @@ class CadastroCozinhaIT {
                 .when()
                     .post()
                 .then()
-                .statusCode(HttpStatus.CREATED.value());
+                    .statusCode(HttpStatus.CREATED.value());
 
      }
 
@@ -144,7 +133,7 @@ class CadastroCozinhaIT {
     public void deveRetornarRespostaEStatusCorretos_QuandoConsultarCozinhaExistente() {
         RestAssured
                 .given()
-                .pathParam("cozinhaId", cozinhaAleatoria.getId())
+                    .pathParam("cozinhaId", cozinhaAleatoria.getId())
                     .accept(ContentType.JSON)
                 .when()
                     .get("/{cozinhaId}")
@@ -179,7 +168,7 @@ class CadastroCozinhaIT {
 
         quantidadeCozinhasCadastradas = cozinhaRepository.count();
 
-        listaDeCozinhas = ResourceUtils.getContentFromResources(PATH_JSON_COZINHA);
+        listaDeCozinhas = ResourceUtils.getContentFromResource(PATH_JSON_COZINHA);
 
         cozinhaAleatoria = cozinhaRepository.buscarPrimeiro().get();
 

@@ -39,6 +39,7 @@ public class CadastroRestauranteService {
 
     public void excluir( Long restauranteId) {
         try {
+            buscarOuFalhar(restauranteId);
             restauranteRepository.deleteById(restauranteId);
         } catch (NoSuchElementException e) {
             throw new RestauranteNaoEncontradoException(restauranteId);
