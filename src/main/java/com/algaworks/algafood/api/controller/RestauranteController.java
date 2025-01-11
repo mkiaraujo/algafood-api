@@ -39,10 +39,8 @@ public class RestauranteController {
     private SmartValidator smartValidator;
 
     @GetMapping
-    public ResponseEntity<List<Restaurante>> listar() {
-        List<Restaurante> restaurantes = restauranteRepository.findAll();
-
-        return ResponseEntity.ok(restaurantes);
+    public List<Restaurante> listar() {
+        return restauranteRepository.findAll();
     }
 
     @GetMapping("/{restauranteId}")
