@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
+import com.algaworks.algafood.api.disassembler.ModelRestauranteDisassembler;
 import com.algaworks.algafood.api.model.CozinhaModel;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.input.CozinhaIdInput;
@@ -48,6 +49,9 @@ public class RestauranteController {
     @Autowired
     private RestauranteModelAssembler restauranteModelAssembler;
 
+    @Autowired
+    private ModelRestauranteDisassembler modelRestauranteDisassembler;
+
     @GetMapping
     public List<RestauranteModel> listar() {
 
@@ -66,7 +70,7 @@ public class RestauranteController {
     public RestauranteModel adicionar(@RequestBody
                 @Valid RestauranteInput restauranteInput) {
         try {
-            Restaurante restaurante = toDomainObject(restauranteInput);
+            Restaurante restaurante = modelRestauranteDisassembler.toDomainObject(restauranteInput);
 
             return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restaurante));
         } catch (EntidadeNaoEncontradaException e){
@@ -78,7 +82,7 @@ public class RestauranteController {
     public RestauranteModel atualizar(@PathVariable Long restauranteId,
                                       @RequestBody @Valid RestauranteInput restauranteInput) {
         try {
-            Restaurante restaurante = toDomainObject(restauranteInput);
+            Restaurante restaurante = modelRestauranteDisassembler.toDomainObject(restauranteInput);
             Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
             BeanUtils.copyProperties(restaurante, restauranteAtual,
                         "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
@@ -98,7 +102,7 @@ public class RestauranteController {
 
         validate(restauranteAtual, "restaurante");
 
-        RestauranteInput restauranteInput = toInputModel(restauranteAtual);
+        RestauranteInput restauranteInput = restauranteModelAssembler.toInputModel(restauranteAtual);
 
         return atualizar(restauranteId, restauranteInput);
     }
@@ -147,28 +151,5 @@ public class RestauranteController {
         cadastroRestaurante.excluir(restauranteId);
     }
 
-    private Restaurante toDomainObject(RestauranteInput restauranteInput) {
-        Restaurante restaurante = new Restaurante();
-        restaurante.setNome(restauranteInput.getNome());
-        restaurante.setTaxaFrete(restauranteInput.getTaxaFrete());
 
-        Cozinha cozinha = new Cozinha();
-        cozinha.setId(restauranteInput.getCozinha().getId());
-
-        restaurante.setCozinha(cozinha);
-
-        return restaurante;
-    }
-
-    private RestauranteInput toInputModel(Restaurante restauranteAtual) {
-        RestauranteInput restauranteInput = new RestauranteInput();
-        restauranteInput.setNome(restauranteAtual.getNome());
-        restauranteInput.setTaxaFrete(restauranteAtual.getTaxaFrete());
-
-        CozinhaIdInput cozinhaIdInput = new CozinhaIdInput();
-        cozinhaIdInput.setId(restauranteAtual.getCozinha().getId());
-
-        restauranteInput.setCozinha(cozinhaIdInput);
-        return restauranteInput;
-    }
 }

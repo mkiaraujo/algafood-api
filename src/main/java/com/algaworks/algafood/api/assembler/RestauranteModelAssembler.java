@@ -2,6 +2,8 @@ package com.algaworks.algafood.api.assembler;
 
 import com.algaworks.algafood.api.model.CozinhaModel;
 import com.algaworks.algafood.api.model.RestauranteModel;
+import com.algaworks.algafood.api.model.input.CozinhaIdInput;
+import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.domain.model.Restaurante;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +31,18 @@ public class RestauranteModelAssembler {
         return restaurantes.stream()
                 .map(restaurante -> toModel(restaurante))
                 .collect(Collectors.toList());
+    }
+
+    public RestauranteInput toInputModel(Restaurante restauranteAtual) {
+        RestauranteInput restauranteInput = new RestauranteInput();
+        restauranteInput.setNome(restauranteAtual.getNome());
+        restauranteInput.setTaxaFrete(restauranteAtual.getTaxaFrete());
+
+        CozinhaIdInput cozinhaIdInput = new CozinhaIdInput();
+        cozinhaIdInput.setId(restauranteAtual.getCozinha().getId());
+
+        restauranteInput.setCozinha(cozinhaIdInput);
+        return restauranteInput;
     }
 
 }
