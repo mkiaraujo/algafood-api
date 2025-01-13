@@ -45,7 +45,7 @@ public class RestauranteController {
     private RestauranteModelAssembler restauranteModelAssembler;
 
     @Autowired
-    private RestauranteInputDisassembler modelRestauranteDisassembler;
+    private RestauranteInputDisassembler restauranteInputDisassembler;
 
     @GetMapping
     public List<RestauranteModel> listar() {
@@ -65,7 +65,7 @@ public class RestauranteController {
     public RestauranteModel adicionar(@RequestBody
                 @Valid RestauranteInput restauranteInput) {
         try {
-            Restaurante restaurante = modelRestauranteDisassembler.toDomainObject(restauranteInput);
+            Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 
             return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restaurante));
         } catch (EntidadeNaoEncontradaException e){
@@ -77,10 +77,14 @@ public class RestauranteController {
     public RestauranteModel atualizar(@PathVariable Long restauranteId,
                                       @RequestBody @Valid RestauranteInput restauranteInput) {
         try {
-            Restaurante restaurante = modelRestauranteDisassembler.toDomainObject(restauranteInput);
+//            Restaurante restaurante = modelRestauranteDisassembler.toDomainObject(restauranteInput);
             Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
-            BeanUtils.copyProperties(restaurante, restauranteAtual,
-                        "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
+
+            restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
+
+//            BeanUtils.copyProperties(restaurante, restauranteAtual,
+//                        "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
+
             return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restauranteAtual));
         } catch (EntidadeNaoEncontradaException e){
             throw new NegocioException(e.getMessage());
