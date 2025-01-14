@@ -19,7 +19,7 @@ public class RestauranteInputDisassembler {
 
     public void copyToDomainObject(RestauranteInput restauranteInput, Restaurante restaurante){
 //        Para evitar org.springframework.orm.jpa.JpaSystemException: identifier of an instance
-//        of com.algaworks.algafood.domain.model.Cozinha was altered from 2 to 1
+////        of com.algaworks.algafood.domain.model.Cozinha was altered from 2 to 1
         restaurante.setCozinha(new Cozinha());
 
         modelMapper.map(restauranteInput, restaurante);
