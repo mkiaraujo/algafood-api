@@ -12,6 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.NoSuchElementException;
@@ -32,6 +33,7 @@ public class CadastroCozinhaService {
         try {
            buscarOuFalhar(cozinhaId);
            cozinhaRepository.deleteById(cozinhaId);
+           cozinhaRepository.flush();
         } catch (NoSuchElementException e){
             throw new CozinhaNaoEncontradaException(cozinhaId);
         } catch (EmptyResultDataAccessException e) {
