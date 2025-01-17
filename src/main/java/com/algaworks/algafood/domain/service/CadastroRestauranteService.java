@@ -40,6 +40,19 @@ public class CadastroRestauranteService {
     }
 
     @Transactional
+    public void ativar(Long restauranteId){
+        Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+
+        restauranteAtual.ativar();
+    }
+    @Transactional
+    public void inativar(Long restauranteId){
+        Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+
+        restauranteAtual.inativar();
+    }
+
+    @Transactional
     public void excluir( Long restauranteId) {
         try {
             buscarOuFalhar(restauranteId);
