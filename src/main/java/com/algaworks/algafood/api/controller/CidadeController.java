@@ -63,11 +63,7 @@ public class CidadeController {
     public CidadeModel atualizar(@PathVariable Long cidadeId, @RequestBody @Valid CidadeInput cidadeInput) {
         try {
             Cidade cidade = cadastroCidadeService.buscarOuFalhar(cidadeId);
-
             cidadeInputDisassembler.copyToDomainObject(cidadeInput, cidade);
-
-
-//            BeanUtils.copyProperties(cidade, cidadeAtual, "id");
             return cidadeModelAssembler.toModel(cadastroCidadeService.salvar(cidade));
         } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
