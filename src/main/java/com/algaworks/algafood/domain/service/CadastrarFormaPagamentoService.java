@@ -26,6 +26,7 @@ public class CadastrarFormaPagamentoService {
     @Transactional
     public void excluir(Long formaPagamentoId) {
         try {
+            buscarOuFalhar(formaPagamentoId);
             formaPagamentoRepository.deleteById(formaPagamentoId);
             formaPagamentoRepository.flush();
         } catch (NoSuchElementException e) {

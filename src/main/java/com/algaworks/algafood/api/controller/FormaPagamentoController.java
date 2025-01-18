@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/forma-pagamento")
+@RequestMapping("/formas-pagamento")
 public class FormaPagamentoController {
 
     @Autowired
@@ -76,8 +76,4 @@ public class FormaPagamentoController {
     public void remover(@PathVariable Long formaPagamentoId){
         cadastrarFormaPagamentoService.excluir(formaPagamentoId);
     }
-
-
-
-
 }
