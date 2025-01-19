@@ -58,7 +58,6 @@ public class EstadoController {
     public EstadoModel atualizar(@PathVariable Long estadoId, @RequestBody @Valid EstadoInput estadoInput) {
        Estado estadoAtual = cadastroEstadoService.buscarOuFalhar(estadoId);
        estadoInputDisassembler.copyToDomainObject(estadoInput, estadoAtual);
-
        return estadoModelAssembler.toModel(cadastroEstadoService.salvar(estadoAtual));
     }
 
