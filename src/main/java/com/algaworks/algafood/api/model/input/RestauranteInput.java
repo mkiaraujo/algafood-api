@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.model.input;
 
 import com.algaworks.algafood.core.validation.Groups;
+import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +15,8 @@ import java.math.BigDecimal;
 
 @Setter
 @Getter
+@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome",
+        descricaoObrigatoria = "Frete Grátis")
 public class RestauranteInput {
 
     @NotBlank

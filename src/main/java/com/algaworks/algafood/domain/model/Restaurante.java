@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome",
-        descricaoObrigatoria = "Frete Grátis")
+//@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome",
+//        descricaoObrigatoria = "Frete Grátis")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity

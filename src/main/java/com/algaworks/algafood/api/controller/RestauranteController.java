@@ -65,7 +65,6 @@ public class RestauranteController {
                 @Valid RestauranteInput restauranteInput) {
         try {
             Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
-
             return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restaurante));
         } catch (EntidadeNaoEncontradaException e){
             throw new NegocioException(e.getMessage());
