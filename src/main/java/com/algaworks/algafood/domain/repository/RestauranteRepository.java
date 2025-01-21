@@ -38,4 +38,5 @@ public interface RestauranteRepository
 
     int countByCozinhaId(Long cozinhaId);
 
+
 }

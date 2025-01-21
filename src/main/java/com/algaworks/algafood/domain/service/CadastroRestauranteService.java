@@ -2,10 +2,7 @@ package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.exception.RestauranteEmUsoException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
-import com.algaworks.algafood.domain.model.Cidade;
-import com.algaworks.algafood.domain.model.Cozinha;
-import com.algaworks.algafood.domain.model.FormaPagamento;
-import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +30,9 @@ public class CadastroRestauranteService {
 
     @Autowired
     private CadastrarFormaPagamentoService cadastrarFormaPagamentoService;
+
+    @Autowired
+    private CadastrarProdutoService cadastrarProdutoService;
 
     @Transactional
     public Restaurante salvar(Restaurante restaurante) {
@@ -88,6 +88,19 @@ public class CadastroRestauranteService {
         FormaPagamento formaPagamento = cadastrarFormaPagamentoService.buscarOuFalhar(formaPagamentoId);
 
         restaurante.adicionarFormaPagamento(formaPagamento);
+    }
+
+    @Transactional
+    public void desassociarProduto(Long restauranteId, Long produtoId){
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        Produto produto = cadastrarProdutoService.buscarOuFalharProdutoDoRestaurante(restauranteId, produtoId);
+        restaurante.removerProduto(produto);
+    }
+
+    public void associarProduto(Long restauranteId, Long produtoId){
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        Produto produto = cadastrarProdutoService.buscarOuFalhar(produtoId);
+        restaurante.adicionarProduto(produto);
     }
 
     public Restaurante buscarOuFalhar(Long restauranteId) {

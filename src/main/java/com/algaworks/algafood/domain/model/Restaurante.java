@@ -75,4 +75,12 @@ public class Restaurante {
     public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
         return getFormasPagamento().add(formaPagamento);
     }
+
+    public boolean removerProduto(Produto produto) {
+        return getProdutos().remove(produto);
+    }
+
+    public boolean adicionarProduto(Produto produto){
+        return getProdutos().add(produto);
+    }
 }
