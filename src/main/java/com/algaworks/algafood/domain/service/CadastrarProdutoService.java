@@ -1,7 +1,6 @@
 package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.exception.ProdutoDoRestauranteNaoEncontradoException;
-import com.algaworks.algafood.domain.exception.ProdutoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +20,9 @@ public class CadastrarProdutoService {
     }
 
 
-    public Produto buscarOuFalharProdutoDoRestaurante(Long restauranteId, Long produtoId) {
+    public Produto buscarOuFalhar(Long restauranteId, Long produtoId) {
         return produtoRepository
-                .findByIdWhereRestauranteById(restauranteId, produtoId)
+                .findById(restauranteId, produtoId)
                 .orElseThrow(() -> new ProdutoDoRestauranteNaoEncontradoException(restauranteId, produtoId));
-    }
-
-    public Produto buscarOuFalhar(Long produtoId) {
-        return produtoRepository
-                .findById(produtoId)
-                .orElseThrow(() -> new ProdutoNaoEncontradoException(produtoId));
     }
 }

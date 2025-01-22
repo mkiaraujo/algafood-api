@@ -90,21 +90,9 @@ public class CadastroRestauranteService {
         restaurante.adicionarFormaPagamento(formaPagamento);
     }
 
-    @Transactional
-    public void desassociarProduto(Long restauranteId, Long produtoId){
-        Restaurante restaurante = buscarOuFalhar(restauranteId);
-        Produto produto = cadastrarProdutoService.buscarOuFalharProdutoDoRestaurante(restauranteId, produtoId);
-        restaurante.removerProduto(produto);
-    }
-
-    public void associarProduto(Long restauranteId, Long produtoId){
-        Restaurante restaurante = buscarOuFalhar(restauranteId);
-        Produto produto = cadastrarProdutoService.buscarOuFalhar(produtoId);
-        restaurante.adicionarProduto(produto);
-    }
-
     public Restaurante buscarOuFalhar(Long restauranteId) {
         return restauranteRepository.findById(restauranteId)
                 .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
     }
+
 }
