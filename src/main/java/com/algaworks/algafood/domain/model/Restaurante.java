@@ -1,11 +1,8 @@
 package com.algaworks.algafood.domain.model;
 
-import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -44,6 +41,8 @@ public class Restaurante {
 
     private Boolean ativo = Boolean.TRUE;
 
+    private Boolean aberto = Boolean.FALSE;
+
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime dataCadastro;
@@ -76,4 +75,11 @@ public class Restaurante {
         return getFormasPagamento().add(formaPagamento);
     }
 
+    public void fechar() {
+        setAberto(false);
+    }
+
+    public void abrir() {
+        setAberto(true);
+    }
 }
