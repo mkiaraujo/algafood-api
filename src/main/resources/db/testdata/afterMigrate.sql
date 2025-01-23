@@ -78,3 +78,5 @@ insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Esp
 INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES(1, 'Mauricio Almeida', 'mauricio@gmail.com', '123', utc_timestamp);
 INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES(2, 'Eduardo Henrique', 'eduardo@gmail.com', '123', utc_timestamp);
 INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES(3, 'Jose Matos', 'jose@gmail.com', '123', utc_timestamp);
+
+insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 3), (3, 2), (3, 3);
