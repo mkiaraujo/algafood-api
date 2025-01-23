@@ -5,6 +5,7 @@ import com.algaworks.algafood.domain.exception.GrupoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.RestauranteEmUsoException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Grupo;
+import com.algaworks.algafood.domain.model.Permissao;
 import com.algaworks.algafood.domain.repository.GrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,6 +20,9 @@ public class CadastroGrupoService {
 
     @Autowired
     private GrupoRepository grupoRepository;
+
+    @Autowired
+    private CadastrarPermissaoService cadastrarPermissaoService;
 
     public Grupo buscarOuFalhar(Long grupoId){
         return grupoRepository.findById(grupoId)
@@ -45,4 +49,18 @@ public class CadastroGrupoService {
             }
     }
 
+    @Transactional
+    public void associarPermissao(Long grupoId , Long permissaoId) {
+        Grupo grupo = buscarOuFalhar(grupoId);
+        Permissao permissao = cadastrarPermissaoService.buscarOuFalhar(permissaoId);
+        grupo.adicionarPermissao(permissao);
+    }
+
+    @Transactional
+    public void desassociarPermissao(Long grupoId, Long permissaoId) {
+        Grupo grupo = buscarOuFalhar(grupoId);
+        Permissao permissao = cadastrarPermissaoService.buscarOuFalhar(permissaoId);
+
+        grupo.removerPermissao(permissao);
+    }
 }

@@ -55,7 +55,7 @@ insert into permissao (id, nome, descricao) values (1, 'CONSULTAR_COZINHAS', 'Pe
 insert into permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permite editar cozinhas');
 
 INSERT INTO grupo (nome) VALUES('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
-
+insert into grupo_permissao (grupo_id, permissao_id) values (1, 1), (1, 2), (2, 1), (3, 2), (3, 1);
 
 
 insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3), (4, 1), (4, 2), (5, 1), (5, 2), (6, 3);
