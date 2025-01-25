@@ -34,6 +34,9 @@ public class CadastroRestauranteService {
     @Autowired
     private CadastrarProdutoService cadastrarProdutoService;
 
+    @Autowired
+    private CadastroUsuarioService cadastroUsuarioService;
+
     @Transactional
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
@@ -100,6 +103,20 @@ public class CadastroRestauranteService {
     public void abrir(Long restauranteId) {
         Restaurante restaurante = buscarOuFalhar(restauranteId);
         restaurante.abrir();
+    }
+
+    @Transactional
+    public void associarUsuario(Long restauranteId , Long usuarioId) {
+        var restaurante = buscarOuFalhar(restauranteId);
+        var usuario = cadastroUsuarioService.buscarOuFalhar(usuarioId);
+        restaurante.adicionarUsuario(usuario);
+    }
+
+    @Transactional
+    public void desassociarUsuario(Long restauranteId, Long usuarioId){
+        var restaurante = buscarOuFalhar(restauranteId);
+        var usuario = cadastroUsuarioService.buscarOuFalhar(usuarioId);
+        restaurante.removerUsuario(usuario);
     }
 
     public Restaurante buscarOuFalhar(Long restauranteId) {
