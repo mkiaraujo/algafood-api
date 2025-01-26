@@ -134,4 +134,5 @@ public class CadastroRestauranteService {
         return restauranteRepository.findById(restauranteId)
                 .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
     }
+
 }

@@ -3,14 +3,17 @@ package com.algaworks.algafood.domain.service;
 import com.algaworks.algafood.domain.exception.FormaPagamentoEmUsoException;
 import com.algaworks.algafood.domain.exception.FormaPagamentoNaoEncontradaException;
 import com.algaworks.algafood.domain.model.FormaPagamento;
+import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.FormaPagamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class CadastrarFormaPagamentoService {
@@ -45,4 +48,5 @@ public class CadastrarFormaPagamentoService {
                 .findById(formaPagamentoId)
                 .orElseThrow(() -> new FormaPagamentoNaoEncontradaException(formaPagamentoId));
     }
+
 }

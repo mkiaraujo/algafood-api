@@ -23,6 +23,9 @@ public interface RestauranteRepository
             "left join fetch r.endereco.cidade.estado")
     List<Restaurante> findAll();
 
+//    @Query("from Restaurante where restaurante.id := restauranteId and id := formaPagamentoId")
+//    Optional<Restaurante> findByIdRestauranteAndFormaPagamento(Long restauranteId , Long formaPagamentoId);
+
 //    List<Restaurante> findAll();
 
     List<Restaurante> findByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);

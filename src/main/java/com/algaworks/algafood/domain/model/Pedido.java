@@ -55,8 +55,10 @@ public class Pedido {
     private List<ItemPedido> itens = new ArrayList<>();
 
     public void calcularValorTotal() {
+        getItens().forEach(ItemPedido::calcularPrecoTotal);
+
         this.subtotal = getItens().stream()
-                .map(itemPedido -> itemPedido.getPrecoTotal())
+                .map(item -> item.getPrecoTotal())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         this.valorTotal = this.subtotal.add(this.taxaFrete);
     }
