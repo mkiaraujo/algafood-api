@@ -20,9 +20,9 @@ public class PedidoModel {
     private OffsetDateTime dataConfirmacao;
     private OffsetDateTime dataCancelamento;
     private OffsetDateTime dataEntrega;
-    private StatusPedido status;
+    private String status;
     private FormaPagamentoModel formaPagamento;
-    private RestauranteModel restaurante;
+    private RestauranteResumoModel restaurante;
     private UsuarioModel cliente;
     private EnderecoModel enderecoEntrega;
     private List<ItemPedidoModel> itens;

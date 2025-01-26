@@ -54,4 +54,18 @@ public class Pedido {
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itens = new ArrayList<>();
 
+    public void calcularValorTotal() {
+        this.subtotal = getItens().stream()
+                .map(itemPedido -> itemPedido.getPrecoTotal())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        this.valorTotal = this.subtotal.add(this.taxaFrete);
+    }
+    public void definirFrete() {
+        setTaxaFrete(getRestaurante().getTaxaFrete());
+    }
+
+    public void atribuirPedidoAosItens() {
+        getItens().forEach(itemPedido -> itemPedido.setPedido(this));
+    }
+
 }
