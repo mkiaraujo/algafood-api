@@ -33,7 +33,8 @@ public class Pedido {
     private OffsetDateTime dataCancelamento;
     private OffsetDateTime dataEntrega;
 
-    private StatusPedido status;
+    @Enumerated(EnumType.STRING)
+    private StatusPedido status = StatusPedido.CRIADO;
 
     @ManyToOne
     @JoinColumn(name = "forma_pagamento_id", nullable = false)
