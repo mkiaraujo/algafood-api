@@ -29,10 +29,10 @@ public class EmissaoPedidoService {
     @Autowired
     private CadastrarProdutoService cadastrarProdutoService;
 
-    public Pedido buscarOuFalhar(Long pedidoId) {
+    public Pedido buscarOuFalhar(String codigoPedido) {
         return pedidoRepository
-                .findById(pedidoId)
-                .orElseThrow(() -> new PedidoNaoEncontradoException(pedidoId));
+                .findByCodigo(codigoPedido)
+                .orElseThrow(() -> new PedidoNaoEncontradoException(codigoPedido));
 
     }
 
