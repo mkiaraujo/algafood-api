@@ -11,12 +11,21 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import jakarta.validation.Valid;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/pedidos")
@@ -38,9 +47,30 @@ public class PedidoController {
     private PedidoInputDisassembler pedidoInputDisassembler;
 
     @GetMapping
-    public List<PedidoResumoModel> listar(){
-        return pedidoResumoModelAssembler.toCollectionModel(pedidoRepository.findAll());
+    public MappingJacksonValue listar(@RequestParam(required = false) String campos){
+        var pedidos = pedidoRepository.findAll();
+        var pedidosModel = pedidoResumoModelAssembler.toCollectionModel(pedidos);
+        var pedidosWrapper = new MappingJacksonValue(pedidosModel);
+        var filterProvider = new SimpleFilterProvider();
+        filterProvider
+                .addFilter("pedidoFilter", SimpleBeanPropertyFilter
+                        .serializeAll());
+
+        if (StringUtils.isNotBlank(campos)){
+            System.out.println(campos);
+            filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.filterOutAllExcept(campos.split(",")));
+        }
+
+        pedidosWrapper.setFilters(filterProvider);
+
+        return pedidosWrapper;
     }
+
+
+//    @GetMapping
+//    public List<PedidoResumoModel> listar(){
+//        return pedidoResumoModelAssembler.toCollectionModel(pedidoRepository.findAll());
+//    }
 
     @GetMapping("/{codigoPedido}")
     public PedidoModel buscar(@PathVariable String codigoPedido) {
