@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,10 +36,18 @@ public class RestauranteProdutoController {
     private ProdutoInputDisassembler produtoInputDisassembler;
 
     @GetMapping
-    public List<ProdutoModel> listar(@PathVariable Long restauranteId) {
+    public List<ProdutoModel> listar(@PathVariable Long restauranteId,
+                                     @RequestParam(required = false) boolean incluirInativos) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
-        List<Produto> todosProdutos = produtoRepository.findByRestaurante(restaurante);
 
+        List<Produto> todosProdutos = null;
+
+        if (incluirInativos){
+            todosProdutos = produtoRepository.findTodosByRestaurante(restaurante);
+        }else {
+            todosProdutos = produtoRepository.findByAtivosByRestaurante(restaurante);
+
+        }
         return produtoModelAssembler.toCollectionModel(todosProdutos);
     }
 
