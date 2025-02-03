@@ -10,7 +10,9 @@ import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
+import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
+import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import jakarta.validation.Valid;
@@ -47,23 +49,10 @@ public class PedidoController {
     private PedidoInputDisassembler pedidoInputDisassembler;
 
     @GetMapping
-    public MappingJacksonValue listar(@RequestParam(required = false) String campos){
-        var pedidos = pedidoRepository.findAll();
-        var pedidosModel = pedidoResumoModelAssembler.toCollectionModel(pedidos);
-        var pedidosWrapper = new MappingJacksonValue(pedidosModel);
-        var filterProvider = new SimpleFilterProvider();
-        filterProvider
-                .addFilter("pedidoFilter", SimpleBeanPropertyFilter
-                        .serializeAll());
+    public List<PedidoResumoModel> pesquisar(PedidoFilter filtro){
+        var todosPedidos = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro));
 
-        if (StringUtils.isNotBlank(campos)){
-            System.out.println(campos);
-            filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.filterOutAllExcept(campos.split(",")));
-        }
-
-        pedidosWrapper.setFilters(filterProvider);
-
-        return pedidosWrapper;
+        return pedidoResumoModelAssembler.toCollectionModel(todosPedidos);
     }
 
 
