@@ -13,15 +13,15 @@ public class PedidoSpecs {
     public static Specification<Pedido> usandoFiltro(PedidoFilter filtro) {
         return (root, query, builder) -> {
             var predicates = new ArrayList<Predicate>();
-
-            root.fetch("restaurante");
-            root.fetch("cliente");
-            root.fetch("restaurante").fetch("cozinha");
-            root.fetch("restaurante")
-                    .fetch("endereco")
-                    .fetch("cidade")
-                    .fetch("estado");
-
+            if (Pedido.class.equals(query.getResultType())) {
+                root.fetch("restaurante");
+                root.fetch("cliente");
+                root.fetch("restaurante").fetch("cozinha");
+                root.fetch("restaurante")
+                        .fetch("endereco")
+                        .fetch("cidade")
+                        .fetch("estado");
+            }
             // adicionar predicates no arraylist
             if (filtro.getClienteId() != null) {
                 predicates.add(builder.equal(root.get("cliente").get("id"), filtro.getClienteId()));
@@ -40,7 +40,6 @@ public class PedidoSpecs {
                 predicates.add(builder.lessThanOrEqualTo(root.get("dataCriacao"),
                         filtro.getDataCriacaoFim()));
             }
-            var teste = builder.and(predicates.toArray(new Predicate[0]));
 
             return builder.and(predicates.toArray(new Predicate[0]));
         };
