@@ -22,5 +22,4 @@ public class PedidoResumoModel {
     private RestauranteResumoModel restaurante;
     private UsuarioModel cliente;
 
-
 }

@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.assembler.PedidoResumoModelAssembler;
 import com.algaworks.algafood.api.model.PedidoModel;
 import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.model.input.PedidoInput;
+import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Pedido;
@@ -28,10 +29,7 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -55,16 +53,29 @@ public class PedidoController {
 
     @GetMapping
     public Page<PedidoResumoModel> pesquisar(@PageableDefault(size = 10) Pageable pageable, PedidoFilter filtro){
-        var todosPedidosPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
-        var pedidosResumoModel =  pedidoResumoModelAssembler.toCollectionModel(todosPedidosPage.getContent());
+        pageable = traduzirPageable(pageable);
 
-        var PedidoResumoModelPage =
-                new PageImpl<>(pedidosResumoModel, pageable, todosPedidosPage.getTotalElements());
-        return PedidoResumoModelPage;
+        var pedidosPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
+        var pedidosResumoModel =  pedidoResumoModelAssembler.toCollectionModel(pedidosPage.getContent());
+
+        var PedidosResumoModelPage =
+                new PageImpl<>(pedidosResumoModel, pageable, pedidosPage.getTotalElements());
+        return PedidosResumoModelPage;
     }
 
+    private Pageable traduzirPageable(Pageable apiPageable){
+        var mapeamento = Map.of(
+                "codigo", "codigo",
+                "subTotal", "subTotal",
+                "taxaFrete", "taxaFrete",
+                "restaurante.nome", "restaurante.nome",
+                "cliente.nome", "cliente.nome",
+                "valorTotal", "valorTotal"
+        );
+        return PageableTranslator.translate(apiPageable, mapeamento);
+    }
 
-//    @GetMapping
+//    @GetMappings
 //    public List<PedidoResumoModel> listar(){
 //        return pedidoResumoModelAssembler.toCollectionModel(pedidoRepository.findAll());
 //    }
