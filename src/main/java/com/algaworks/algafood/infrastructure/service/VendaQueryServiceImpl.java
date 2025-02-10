@@ -22,7 +22,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 
 
     @Override
-    public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro) {
+    public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro, String timeOffset) {
         var builder = manager.getCriteriaBuilder();
         var query = builder.createQuery(VendaDiaria.class);
         var root = query.from(Pedido.class);
@@ -43,9 +43,14 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 
         query.where(predicates.toArray(new Predicate[0]));
 
+        var functionConvertTzDataCriacao =
+                builder.function("convert_tz", LocalDate.class,
+                        root.get("dataCriacao"),
+                        builder.literal("+00:00"),
+                        builder.literal(timeOffset));
 
         var functionDateDataCriacao = builder.function("date",
-                LocalDate.class, root.get("dataCriacao"));
+                LocalDate.class, functionConvertTzDataCriacao);
 
         var selection = builder.construct(VendaDiaria.class,
                 functionDateDataCriacao,
