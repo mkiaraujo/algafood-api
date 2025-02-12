@@ -10,8 +10,8 @@ import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -44,13 +44,13 @@ public class VendaQueryServiceImpl implements VendaQueryService {
         query.where(predicates.toArray(new Predicate[0]));
 
         var functionConvertTzDataCriacao =
-                builder.function("convert_tz", LocalDate.class,
+                builder.function("convert_tz", Date.class,
                         root.get("dataCriacao"),
                         builder.literal("+00:00"),
                         builder.literal(timeOffset));
 
         var functionDateDataCriacao = builder.function("date",
-                LocalDate.class, functionConvertTzDataCriacao);
+                Date.class, functionConvertTzDataCriacao);
 
         var selection = builder.construct(VendaDiaria.class,
                 functionDateDataCriacao,
