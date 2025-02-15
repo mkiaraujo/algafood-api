@@ -2,6 +2,8 @@ package com.algaworks.algafood.api.controller;
 
 
 import com.algaworks.algafood.api.model.input.FotoProdutoInput;
+import jakarta.validation.Valid;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +18,7 @@ public class RestauranteProdutoFotoController {
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
-                              FotoProdutoInput fotoProdutoInput){
+                              @Valid FotoProdutoInput fotoProdutoInput){
 
         var nomeArquivo = UUID.randomUUID().toString()
                 + "_" + fotoProdutoInput.getArquivo().getOriginalFilename();
