@@ -11,10 +11,7 @@ import com.algaworks.algafood.domain.service.CatalogoFotoProdutoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -31,6 +28,12 @@ public class RestauranteProdutoFotoController {
 
     @Autowired
     private FotoProdutoModelAssembler fotoProdutoModelAssembler;
+
+    @GetMapping
+    public FotoProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+        var fotoProduto = catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId);
+        return fotoProdutoModelAssembler.toModel(fotoProduto);
+    }
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
