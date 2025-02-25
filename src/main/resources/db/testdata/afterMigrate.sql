@@ -82,7 +82,7 @@ insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('San
 
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
 
-INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES(1, 'Mauricio Almeida', 'mauricio@gmail.com', '123', utc_timestamp);
+INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES(1, 'Mauricio Almeida', 'mki.araujo@gmail.com', '123', utc_timestamp);
 INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES(2, 'Eduardo Henrique', 'eduardo@gmail.com', '123', utc_timestamp);
 INSERT INTO usuario (id, nome, email, senha, data_cadastro) VALUES(3, 'Jose Matos', 'jose@gmail.com', '123', utc_timestamp);
 
