@@ -32,6 +32,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
@@ -53,22 +54,17 @@ public class RestauranteController {
 
     @JsonView(RestauranteView.Resumo.class)
     @GetMapping
-    public ResponseEntity<List<RestauranteModel>> listar() {
-
-        var restaurantesModel = restauranteModelAssembler
+    public List<RestauranteModel> listar() {
+        return restauranteModelAssembler
                 .toCollectionModel(restauranteRepository.findAll());
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
-                .body(restaurantesModel);
     }
 
-//    @JsonView(RestauranteView.ApenasNome.class)
-//    @GetMapping(params = "projecao=apenas-nome")
-//    public List<RestauranteModel> listarApenasNomes() {
-//
-//        return listar();
-//    }
+    @JsonView(RestauranteView.ApenasNome.class)
+    @GetMapping(params = "projecao=apenas-nome")
+    public List<RestauranteModel> listarApenasNomes() {
+
+        return listar();
+    }
 
 
 //    @GetMapping
