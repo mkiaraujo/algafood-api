@@ -16,6 +16,8 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -38,7 +40,21 @@ public class FormaPagamentoController {
     private CadastrarFormaPagamentoService cadastrarFormaPagamentoService;
 
     @GetMapping
-    public ResponseEntity<List<FormaPagamentoModel>> listar(){
+    public ResponseEntity<List<FormaPagamentoModel>> listar(ServletWebRequest request){
+        ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
+
+        String eTag = "0";
+
+        var dataUltimaAtualizacao = formaPagamentoRepository.getDataUltimaAtualizacao();
+
+        if (dataUltimaAtualizacao.isPresent()){
+            eTag = String.valueOf(dataUltimaAtualizacao.get().toEpochSecond());
+        }
+
+        if (request.checkNotModified(eTag)) {
+            return null;
+        }
+
         var todasFormasPagamentos = formaPagamentoRepository.findAll();
 
         var formasPagamentosModel =
@@ -46,6 +62,7 @@ public class FormaPagamentoController {
 
         return ResponseEntity.ok()
                 .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
+                .eTag(eTag)
                 .body(formasPagamentosModel);
     }
 

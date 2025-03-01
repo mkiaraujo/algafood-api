@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, Long> {
 
     @Query("select max(dataAtualizacao) from FormaPagamento")
-    OffsetDateTime getDataUltimaAtualizacao();
+    Optional<OffsetDateTime> getDataUltimaAtualizacao();
 
 }
