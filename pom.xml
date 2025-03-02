@@ -16,9 +16,9 @@
 	<properties>
 		<java.version>17</java.version>
 		<modelmapper.version>2.3.0</modelmapper.version>
-		<squiggly.version>1.3.18</squiggly.version>
 		<jasperreports.version>6.20.0</jasperreports.version>
 		<asw-java-sdk-s3.version>1.12.782</asw-java-sdk-s3.version>
+		<spring-fox.version>3.0.0</spring-fox.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -114,7 +114,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-freemarker</artifactId>
 		</dependency>
-    </dependencies>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>${spring-fox.version}</version>
+		</dependency>
+
+	</dependencies>
 
 	<build>
 		<plugins>
