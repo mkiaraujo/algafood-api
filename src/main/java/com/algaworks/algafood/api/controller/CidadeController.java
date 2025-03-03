@@ -45,43 +45,12 @@ public class CidadeController {
     public CollectionModel<CidadeModel> listar() {
         var todasCidades = cidadeRepository.findAll();
 
-        var cidadesModel = cidadeModelAssembler.toCollectionModel(todasCidades);
-
-        cidadesModel.forEach(cidadeModel -> {
-            cidadeModel.add(linkTo(methodOn(CidadeController.class)
-                    .buscar(cidadeModel.getId())).withSelfRel());
-
-            cidadeModel.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
-
-            cidadeModel
-                    .getEstado()
-                    .add(linkTo(methodOn(EstadoController.class)
-                            .buscar(cidadeModel.getEstado().getId())).withSelfRel());
-        });
-
-        var cidadesCollectionModel = CollectionModel.of(cidadesModel);
-
-        cidadesCollectionModel.add(linkTo(methodOn(CidadeController.class)
-                .listar()).withSelfRel());
-
-        return cidadesCollectionModel;
+       return cidadeModelAssembler.toCollectionModel(todasCidades);
     }
 
     @GetMapping("/{cidadeId}")
     public CidadeModel buscar(@PathVariable Long cidadeId) {
-        var cidadeModel = cidadeModelAssembler.toModel(cadastroCidadeService.buscarOuFalhar(cidadeId));
-
-        cidadeModel.add(linkTo(methodOn(CidadeController.class)
-                .buscar(cidadeModel.getId())).withSelfRel());
-
-        cidadeModel.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
-
-        cidadeModel
-                .getEstado()
-                        .add(linkTo(methodOn(EstadoController.class)
-                                .buscar(cidadeModel.getEstado().getId())).withSelfRel());
-
-        return cidadeModel;
+       return cidadeModelAssembler.toModel(cadastroCidadeService.buscarOuFalhar(cidadeId));
     }
 
     @PostMapping
