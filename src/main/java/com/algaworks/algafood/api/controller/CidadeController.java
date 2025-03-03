@@ -15,6 +15,7 @@ import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,8 +42,29 @@ public class CidadeController {
     private CidadeInputDisassembler cidadeInputDisassembler;
 
     @GetMapping
-    public List<CidadeModel> listar() {
-        return cidadeModelAssembler.toCollectionModel(cidadeRepository.findAll());
+    public CollectionModel<CidadeModel> listar() {
+        var todasCidades = cidadeRepository.findAll();
+
+        var cidadesModel = cidadeModelAssembler.toCollectionModel(todasCidades);
+
+        cidadesModel.forEach(cidadeModel -> {
+            cidadeModel.add(linkTo(methodOn(CidadeController.class)
+                    .buscar(cidadeModel.getId())).withSelfRel());
+
+            cidadeModel.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
+
+            cidadeModel
+                    .getEstado()
+                    .add(linkTo(methodOn(EstadoController.class)
+                            .buscar(cidadeModel.getEstado().getId())).withSelfRel());
+        });
+
+        var cidadesCollectionModel = CollectionModel.of(cidadesModel);
+
+        cidadesCollectionModel.add(linkTo(methodOn(CidadeController.class)
+                .listar()).withSelfRel());
+
+        return cidadesCollectionModel;
     }
 
     @GetMapping("/{cidadeId}")
