@@ -13,6 +13,8 @@ import com.algaworks.algafood.domain.service.CadastroCidadeService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -48,7 +50,17 @@ public class CidadeController {
 
     @GetMapping("/{cidadeId}")
     public CidadeModel buscar(@PathVariable Long cidadeId) {
-        return cidadeModelAssembler.toModel(cadastroCidadeService.buscarOuFalhar(cidadeId));
+        var cidadeModel = cidadeModelAssembler.toModel(cadastroCidadeService.buscarOuFalhar(cidadeId));
+
+
+        cidadeModel.add(Link.of("http://api.algafood.local:8080/cidades/1"));
+//        cidadeModel.add(Link.of("http://api.algafood.local:8080/cidades/1", IanaLinkRelations.SELF));
+        cidadeModel.add(Link.of("http://api.algafood.local:8080/cidades", "cidades"));
+//        cidadeModel.add(Link.of("http://api.algafood.local:8080/cidades", IanaLinkRelations.COLLECTION));
+
+        cidadeModel.getEstado().add(Link.of("http://api.algafood.local:8080/estados/1"));
+
+        return cidadeModel;
     }
 
     @PostMapping
