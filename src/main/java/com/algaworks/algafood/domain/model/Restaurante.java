@@ -63,7 +63,7 @@ public class Restaurante {
     @ManyToMany
     @JoinTable(name = "restaurante_usuario_responsavel", joinColumns = @JoinColumn(name = "restaurante_id"),
     inverseJoinColumns = @JoinColumn(name = "usuario_id"))
-    private Set<Usuario> usuarios = new HashSet<>();
+    private Set<Usuario> responsaveis = new HashSet<>();
 
     public void ativar() {
         setAtivo(true);
@@ -97,10 +97,10 @@ public class Restaurante {
     }
 
     public boolean adicionarUsuario(Usuario usuario) {
-        return getUsuarios().add(usuario);
+        return getResponsaveis().add(usuario);
     }
     public boolean removerUsuario(Usuario usuario) {
-        return getUsuarios().remove(usuario);
+        return getResponsaveis().remove(usuario);
     }
 
 }
