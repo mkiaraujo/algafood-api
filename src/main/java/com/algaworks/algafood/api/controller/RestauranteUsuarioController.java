@@ -8,6 +8,7 @@ import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class RestauranteUsuarioController {
     private UsuarioModelAssembler usuarioModelAssembler;
 
     @GetMapping
-    public List<UsuarioModel> listar(@PathVariable Long restauranteId){
+    public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId){
         var restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
         Set<Usuario> usuarios = restaurante.getUsuarios();
         return usuarioModelAssembler.toCollectionModel(usuarios);

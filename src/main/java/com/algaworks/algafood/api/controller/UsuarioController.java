@@ -12,6 +12,7 @@ import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,8 +35,10 @@ public class UsuarioController {
     private UsuarioInputDisassembler usuarioInputDisassembler;
 
     @GetMapping
-    public List<UsuarioModel> listar(){
-        return usuarioModelAssembler.toCollectionModel(usuarioRepository.findAll());
+    public CollectionModel<UsuarioModel> listar(){
+        var usuarios =  usuarioRepository.findAll();
+
+        return usuarioModelAssembler.toCollectionModel(usuarios);
     }
 
     @GetMapping("/{usuarioId}")
