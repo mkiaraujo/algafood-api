@@ -30,7 +30,7 @@ public class PedidoResumoModelAssembler extends RepresentationModelAssemblerSupp
 
     @Override
     public PedidoResumoModel toModel(Pedido pedido) {
-        var pedidoResumoModel = createModelWithId(pedido.getId(), pedido);
+        var pedidoResumoModel = createModelWithId(pedido.getCodigo(), pedido);
         modelMapper.map(pedido, pedidoResumoModel);
 
         pedidoResumoModel.add(linkTo(PedidoController.class).withRel("pedidos"));

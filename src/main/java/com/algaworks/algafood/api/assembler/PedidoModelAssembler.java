@@ -24,7 +24,7 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 
     @Override
     public PedidoModel toModel(Pedido pedido) {
-        var pedidoModel = createModelWithId(pedido.getId(), pedido);
+        var pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
 
         modelMapper.map(pedido, pedidoModel);
 
