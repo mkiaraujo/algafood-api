@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.assembler;
 
+import com.algaworks.algafood.api.Algalinks;
 import com.algaworks.algafood.api.controller.GrupoController;
 import com.algaworks.algafood.api.model.GrupoModel;
 import com.algaworks.algafood.domain.model.Grupo;
@@ -22,6 +23,9 @@ public class GrupoModelAssembler extends RepresentationModelAssemblerSupport<Gru
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private Algalinks algalinks;
+
     public GrupoModelAssembler() {
         super(GrupoController.class , GrupoModel.class);
     }
@@ -32,7 +36,7 @@ public class GrupoModelAssembler extends RepresentationModelAssemblerSupport<Gru
 
         modelMapper.map(grupo, grupoModel);
 
-        grupoModel.add(linkTo(methodOn(GrupoController.class).listar()).withRel("grupos"));
+        grupoModel.add(algalinks.linkToGrupo());
 
         return  grupoModel;
     }
