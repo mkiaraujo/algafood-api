@@ -2,7 +2,6 @@ package com.algaworks.algafood.api.assembler;
 
 import com.algaworks.algafood.api.Algalinks;
 import com.algaworks.algafood.api.controller.UsuarioController;
-import com.algaworks.algafood.api.controller.UsuarioGrupoController;
 import com.algaworks.algafood.api.model.UsuarioModel;
 import com.algaworks.algafood.domain.model.Usuario;
 import org.modelmapper.ModelMapper;
@@ -12,7 +11,6 @@ import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSuppor
 import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<Usuario, UsuarioModel> {
@@ -34,10 +32,10 @@ public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<U
         modelMapper.map(usuario, usuarioModel);
 
        usuarioModel
-               .add(algalinks.linkToUsuario());
+               .add(algalinks.linkToUsuarios("usuarios"));
 
        usuarioModel
-               .add(algalinks.linkToUsuarioGrupo(usuario.getId(), "grupos-usuario"));
+               .add(algalinks.linkToGrupoUsuario(usuario.getId(), "grupos-usuario"));
 
        return usuarioModel;
     }

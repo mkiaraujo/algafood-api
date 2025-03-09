@@ -29,7 +29,7 @@ public class CozinhaModelAssembler extends RepresentationModelAssemblerSupport<C
         var cozinhaModel = createModelWithId(cozinha.getId(), cozinha);
         modelMapper.map(cozinha, cozinhaModel);
 
-        cozinhaModel.add(algalinks.linkToCozinha());
+        cozinhaModel.add(algalinks.linkToCozinhas("cozinhas"));
 
         return cozinhaModel;
     }

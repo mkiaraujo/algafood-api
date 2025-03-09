@@ -31,10 +31,9 @@ public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Es
     @Override
     public EstadoModel toModel(Estado estado) {
         var estadoModel = createModelWithId(estado.getId(), estado);
-
         modelMapper.map(estado, estadoModel);
 
-        estadoModel.add(algalinks.linkToEstado("estados"));
+        estadoModel.add(algalinks.linkToEstados("estados"));
 
         return estadoModel;
     }

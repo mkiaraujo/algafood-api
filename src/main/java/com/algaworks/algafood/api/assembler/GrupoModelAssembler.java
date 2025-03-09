@@ -33,10 +33,9 @@ public class GrupoModelAssembler extends RepresentationModelAssemblerSupport<Gru
     @Override
     public GrupoModel toModel(Grupo grupo){
         var grupoModel = createModelWithId(grupo.getId(), grupo);
-
         modelMapper.map(grupo, grupoModel);
 
-        grupoModel.add(algalinks.linkToGrupo());
+        grupoModel.add(algalinks.linkToGrupo("grupos"));
 
         return  grupoModel;
     }

@@ -32,78 +32,111 @@ public class Algalinks {
                 "pedidos");
     }
 
-    public Link linkToFormaPagamento(Long formaPagamentoId){
-        return linkTo(methodOn(FormaPagamentoController.class)
-                .buscar(formaPagamentoId, null)).withSelfRel();
-    }
-
-    public Link linkToRestaurante(Long restauranteId) {
+    public Link linkToRestaurante(Long restauranteId, String rel) {
         return linkTo(methodOn(RestauranteController.class)
-                .buscar(restauranteId)).withSelfRel();
+                .buscar(restauranteId)).withRel(rel);
+    }
+    public Link linkToRestaurante(Long restauranteId) {
+        return linkToRestaurante(restauranteId, IanaLinkRelations.SELF_VALUE);
     }
 
-    public Link linkToUsuario(Long clienteId) {
+    public Link linkToUsuario(Long usuarioId, String rel) {
         return linkTo(methodOn(UsuarioController.class)
-                .buscar(clienteId)).withSelfRel();
+                .buscar(usuarioId)).withRel(rel);
+    }
+    public Link linkToUsuario(Long usuarioId) {
+        return linkToUsuario(usuarioId, IanaLinkRelations.SELF_VALUE);
+    }
+    public Link linkToUsuarios(String rel) {
+        return linkTo(UsuarioController.class).withRel(rel);
+    }
+    public Link linkToUsuarios() {
+        return linkToUsuarios(IanaLinkRelations.SELF_VALUE);
     }
 
-    public Link linkToEnderecoEntrega(Long cidadeId ) {
-        return linkTo(methodOn(CidadeController.class)
-                .buscar(cidadeId)).withSelfRel();
+    public Link linkToGrupoUsuario(Long usuarioId, String rel) {
+        return linkTo(methodOn(UsuarioGrupoController.class).listar(usuarioId))
+                .withRel(rel);
+    }
+    public Link linkToGrupoUsuario(Long usuarioId) {
+        return linkToGrupoUsuario(usuarioId, IanaLinkRelations.SELF_VALUE);
     }
 
-    public Link linkToItem(Long restauranteId, Long produtoId) {
-        return linkTo(methodOn(RestauranteProdutoController.class)
-                .buscar(restauranteId, produtoId)).withSelfRel();
+    public Link linkToGrupoUsuarios(String rel) {
+        return linkTo(UsuarioGrupoController.class).withRel(rel);
     }
-
-    public Link linkToCidade(String rel){
-        return linkTo(CidadeController.class).withRel(rel);
-    }
-    public Link linkToCidade(){
-        return linkToCidade("cidades");
-    }
-
-    public Link linkToEstado(Long estadoId) {
-        return linkTo(methodOn(EstadoController.class)
-                .buscar(estadoId)).withSelfRel();
-    }
-
-    public Link linkToEstado(String rel) {
-        return linkTo(EstadoController.class).withRel(rel);
-    }
-
-
-    public Link linkToCozinha(String rel){
-        return linkTo(CozinhaController.class).withRel(rel);
-    }
-
-    public Link linkToCozinha() {
-        return linkToCozinha("cozinhas");
+    public Link linkToGrupoUsuarios() {
+        return linkToUsuarios(IanaLinkRelations.SELF_VALUE);
     }
 
     public Link linkToGrupo(String rel) {
         return linkTo(GrupoController.class).withRel(rel);
     }
     public Link linkToGrupo() {
-        return linkToGrupo("grupos");
+        return linkToUsuarios(IanaLinkRelations.SELF_VALUE);
     }
 
-    public Link linkToUsuario(String  rel) {
-        return linkTo(UsuarioController.class)
+
+    public Link linkToResponsaveisRestaurante(Long restauranteId, String rel) {
+        return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
+                .listar(restauranteId)).withRel(rel);
+    }
+    public Link linkToResponsaveisRestaurante(Long restauranteId) {
+        return linkToResponsaveisRestaurante(restauranteId, IanaLinkRelations.SELF_VALUE);
+    }
+
+    public Link linkToFormaPagamento(Long formaPagamentoId, String rel){
+        return linkTo(methodOn(FormaPagamentoController.class)
+                .buscar(formaPagamentoId, null)).withRel(rel);
+    }
+
+    public Link linkToFormaPagamento(Long formaPagamentoId){
+        return linkToFormaPagamento(formaPagamentoId, IanaLinkRelations.SELF_VALUE);
+    }
+
+    public Link linkToCidade(Long cidadeId, String rel){
+        return linkTo(methodOn(CidadeController.class).buscar(cidadeId)).withRel(rel);
+    }
+
+    public Link linkToCidade(Long cidadeId){
+        return linkToCidade(cidadeId, IanaLinkRelations.SELF_VALUE);
+    }
+    public Link linkToCidades(String rel){
+        return linkTo(CidadeController.class).withRel(rel);
+    }
+    public Link linkToCidades(){
+        return linkToCidades(IanaLinkRelations.SELF_VALUE);
+    }
+
+    public Link linkToEstado(Long estadoId, String rel) {
+        return linkTo(methodOn(EstadoController.class)
+                .buscar(estadoId)).withRel(rel);
+    }
+    public Link linkToEstado(Long estadoId) {
+        return linkToEstado(estadoId, IanaLinkRelations.SELF_VALUE);
+    }
+    public Link linkToEstados(String rel) {
+        return linkTo(EstadoController.class).withRel(rel);
+    }
+    public Link linkToEstados() {
+        return linkToEstados(IanaLinkRelations.SELF_VALUE);
+    }
+
+    public Link linkToProduto(Long restauranteId, Long produtoId, String rel) {
+        return linkTo(methodOn(RestauranteProdutoController.class)
+                .buscar(restauranteId, produtoId))
                 .withRel(rel);
     }
-    public Link linkToUsuario() {
-            return linkToUsuario("usuarios");
+    public Link linkToProduto(Long restauranteId, Long produtoId) {
+        return linkToProduto(restauranteId, produtoId, IanaLinkRelations.SELF_VALUE);
     }
 
-    public Link linkToUsuarioGrupo(Long usuarioId, String rel) {
-        return linkTo(methodOn(UsuarioGrupoController.class).listar(usuarioId))
-                .withRel(rel);
+    public Link linkToCozinhas(String rel){
+        return linkTo(CozinhaController.class).withRel(rel);
     }
 
-
-
-
+    public Link linkToCozinhas() {
+        return linkToCozinhas(IanaLinkRelations.SELF_VALUE);
+    }
 
 }

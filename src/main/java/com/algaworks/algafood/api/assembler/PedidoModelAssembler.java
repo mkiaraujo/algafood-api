@@ -28,24 +28,25 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
     @Override
     public PedidoModel toModel(Pedido pedido) {
         var pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
-
         modelMapper.map(pedido, pedidoModel);
 
         pedidoModel.add(algalinks.linkToPedidos());
-
-        pedidoModel.getFormaPagamento().add(algalinks.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
 
         pedidoModel.getRestaurante().add(algalinks.linkToRestaurante(pedido.getRestaurante().getId()));
 
         pedidoModel.getCliente().add(algalinks.linkToUsuario(pedido.getCliente().getId()));
 
+        pedidoModel.getFormaPagamento().add(algalinks.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
+
         pedidoModel
                 .getEnderecoEntrega()
                 .getCidade()
-                .add(algalinks.linkToEnderecoEntrega(pedido.getEnderecoEntrega().getCidade().getId()));
+                .add(algalinks.linkToCidade(pedido.getEnderecoEntrega().getCidade().getId()));
 
-        pedidoModel.getItens().forEach(itens ->
-                itens.add(algalinks.linkToItem(pedido.getRestaurante().getId(), itens.getProdutoId())));
+        pedidoModel.getItens().forEach(item -> {
+            item.add(algalinks.linkToProduto(
+                pedidoModel.getRestaurante().getId(), item.getProdutoId(),"produtos"));
+        });
 
         return pedidoModel;
     }

@@ -30,7 +30,7 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
     @Override
     public CollectionModel<CidadeModel> toCollectionModel(Iterable<? extends Cidade> entities) {
         return super.toCollectionModel(entities)
-                .add(linkTo(methodOn(CidadeController.class).listar()).withSelfRel());
+                .add(linkTo(CidadeController.class).withSelfRel());
     }
 
     @Override
@@ -38,7 +38,7 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
         var cidadeModel = createModelWithId(cidade.getId(), cidade);
         modelMapper.map(cidade, cidadeModel);
 
-        cidadeModel.add(algalinks.linkToCidade());
+        cidadeModel.add(algalinks.linkToCidades("cidades"));
 
         cidadeModel
                 .getEstado()
