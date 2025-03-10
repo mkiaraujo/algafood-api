@@ -51,6 +51,17 @@ public class Algalinks {
     public Link linkToRestaurante(Long restauranteId) {
         return linkToRestaurante(restauranteId, IanaLinkRelations.SELF_VALUE);
     }
+    public Link linkToRestaurantes(String rel) {
+        return linkTo(RestauranteController.class).withRel(rel);
+    }
+    public Link linkToRestaurantes() {
+        return linkToRestaurantes(IanaLinkRelations.SELF_VALUE);
+    }
+
+    public Link linkToRestauranteFormasPagamento(Long restauranteId, String rel) {
+        return linkTo(methodOn(RestauranteFormaPagamentoController.class)
+                .listar(restauranteId)).withRel(rel);
+    }
 
     public Link linkToUsuario(Long usuarioId, String rel) {
         return linkTo(methodOn(UsuarioController.class)
@@ -150,5 +161,15 @@ public class Algalinks {
     public Link linkToCozinhas() {
         return linkToCozinhas(IanaLinkRelations.SELF_VALUE);
     }
+
+    public Link linkToCozinha(Long cozinhaId, String rel) {
+        return linkTo(methodOn(CozinhaController.class)
+                .buscar(cozinhaId)).withRel(rel);
+    }
+    public Link linkToCozinha(Long cozinhaId) {
+        return linkToCozinha(cozinhaId, IanaLinkRelations.SELF_VALUE);
+    }
+
+
 
 }

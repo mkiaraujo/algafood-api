@@ -1,6 +1,5 @@
 package com.algaworks.algafood.api.model;
 
-import com.algaworks.algafood.domain.model.StatusPedido;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
@@ -25,7 +24,7 @@ public class PedidoModel extends RepresentationModel<PedidoModel> {
     private OffsetDateTime dataEntrega;
     private String status;
     private FormaPagamentoModel formaPagamento;
-    private RestauranteResumoModel restaurante;
+    private RestauranteApenasNomeModel restaurante;
     private UsuarioModel cliente;
     private EnderecoModel enderecoEntrega;
     private List<ItemPedidoModel> itens;
