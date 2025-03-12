@@ -33,7 +33,9 @@ public class RestauranteFormaPagamentoController {
         var formasPagamentoModel = formaPagamentoModelAssembler
                 .toCollectionModel(restaurante.getFormasPagamento())
                 .removeLinks()
-                .add(algalinks.linkToRestauranteFormasPagamento(restauranteId));
+                .add(algalinks.linkToRestauranteFormasPagamento(restauranteId))
+                .add(algalinks.linkToRestauranteFormaPagamentoAssociacao(restauranteId, "associar"));
+
 
         formasPagamentoModel.getContent().forEach(formaPagamentoModel -> {
             formasPagamentoModel.add(
