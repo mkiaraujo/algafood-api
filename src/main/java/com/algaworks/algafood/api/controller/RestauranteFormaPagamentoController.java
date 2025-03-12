@@ -33,10 +33,11 @@ public class RestauranteFormaPagamentoController {
         var formasPagamentoModel = formaPagamentoModelAssembler
                 .toCollectionModel(restaurante.getFormasPagamento())
                 .removeLinks()
-                .add(algalinks.linkToRestauranteFormasPagamento(restauranteId));
+                .add(algalinks.linkToRestauranteFormasPagamento(restauranteId))
+                .add(algalinks.linkToRestauranteFormaPagamentoAssociar(restauranteId, "associar"));
 
         formasPagamentoModel.getContent().forEach(formaPagamentoModel -> {
-            formasPagamentoModel.add(
+            formaPagamentoModel.add(
                     algalinks
                             .linkToRestauranteFormaPagamentoDesassociacao(
                                     restauranteId, formaPagamentoModel.getId(), "desassociar"));
