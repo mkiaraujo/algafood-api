@@ -10,10 +10,6 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -35,14 +31,16 @@ public class GrupoModelAssembler extends RepresentationModelAssemblerSupport<Gru
         var grupoModel = createModelWithId(grupo.getId(), grupo);
         modelMapper.map(grupo, grupoModel);
 
-        grupoModel.add(algalinks.linkToGrupo("grupos"));
+        grupoModel.add(algalinks.linkToGrupos("grupos"));
+
+        grupoModel.add(algalinks.linkToGrupoPermissoes(grupo.getId(), "permissoes"));
 
         return  grupoModel;
     }
 
     @Override
     public CollectionModel<GrupoModel> toCollectionModel(Iterable<? extends Grupo> entities) {
-        return super.toCollectionModel(entities).add(linkTo(methodOn(GrupoController.class).listar()).withSelfRel());
+        return super.toCollectionModel(entities).add(algalinks.linkToGrupos());
     }
 
 }

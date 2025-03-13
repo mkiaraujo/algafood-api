@@ -125,22 +125,17 @@ public class Algalinks {
         return linkTo(methodOn(UsuarioGrupoController.class).listar(usuarioId))
                 .withRel(rel);
     }
-    public Link linkToGrupoUsuario(Long usuarioId) {
-        return linkToGrupoUsuario(usuarioId, IanaLinkRelations.SELF_VALUE);
-    }
 
-    public Link linkToGrupoUsuarios(String rel) {
-        return linkTo(UsuarioGrupoController.class).withRel(rel);
-    }
-    public Link linkToGrupoUsuarios() {
-        return linkToUsuarios(IanaLinkRelations.SELF_VALUE);
-    }
-
-    public Link linkToGrupo(String rel) {
+    public Link linkToGrupos(String rel) {
         return linkTo(GrupoController.class).withRel(rel);
     }
-    public Link linkToGrupo() {
-        return linkToUsuarios(IanaLinkRelations.SELF_VALUE);
+
+    public Link linkToGrupos() {
+        return linkToGrupos(IanaLinkRelations.SELF_VALUE);
+    }
+
+    public Link linkToGrupoPermissoes(Long grupoId, String rel) {
+        return linkTo(methodOn(GrupoPermissaoController.class).listar(grupoId)).withRel(rel);
     }
 
 
