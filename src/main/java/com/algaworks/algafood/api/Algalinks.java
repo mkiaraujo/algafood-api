@@ -138,6 +138,20 @@ public class Algalinks {
         return linkTo(methodOn(GrupoPermissaoController.class).listar(grupoId)).withRel(rel);
     }
 
+    public Link linkToGrupoPermissoes(Long grupoId) {
+        return linkToGrupoPermissoes(grupoId, IanaLinkRelations.SELF_VALUE);
+    }
+
+    public Link linkToGrupoPermissoeDesassociar(Long grupoId, Long permissaoId, String rel) {
+        return linkTo(methodOn(GrupoPermissaoController.class)
+                .desassociarPermissao(grupoId, permissaoId)).withRel(rel);
+    }
+
+    public Link linkToGrupoPermissoeAssociar(Long grupoId, String rel) {
+        return linkTo(methodOn(GrupoPermissaoController.class)
+                .associarPermissao(grupoId, null)).withRel(rel);
+    }
+
 
     public Link linkToResponsaveisRestaurante(Long restauranteId, String rel) {
         return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
@@ -231,5 +245,12 @@ public class Algalinks {
     }
     public Link linkToFotoProduto(Long restauranteId, Long produtoId) {
         return linkToFotoProduto(restauranteId, produtoId, IanaLinkRelations.SELF_VALUE);
+    }
+
+    public Link linkToPermissoes(String rel) {
+        return linkTo(PermissaoController.class).withRel(rel);
+    }
+    public Link linkToPermissoes() {
+        return linkToPermissoes(IanaLinkRelations.SELF_VALUE);
     }
 }
