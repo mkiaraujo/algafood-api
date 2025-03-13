@@ -1,8 +1,14 @@
 package com.algaworks.algafood.api;
 
 import com.algaworks.algafood.api.controller.*;
+import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 import org.springframework.hateoas.*;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -261,4 +267,25 @@ public class Algalinks {
     public Link linkToPermissoes() {
         return linkToPermissoes(IanaLinkRelations.SELF_VALUE);
     }
+
+    public Link linkToEstatisticas(String rel) {
+        return linkTo(EstatisticasController.class).withRel(rel);
+    }
+
+    public Link linkToEstatisticasVendasDiarias(String rel) {
+        var filtroVariables = new TemplateVariables(
+                new TemplateVariable("restauranteId", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("dataCriacaoInicio", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("dataCriacaoFim", TemplateVariable.VariableType.REQUEST_PARAM)
+        );
+
+
+        var vendaDiariaUrl = linkTo(methodOn(EstatisticasController.class)
+                .consultarVendasDiarias(null, null))
+                .toUri().toString();
+
+        return Link.of(UriTemplate.of(vendaDiariaUrl, filtroVariables), rel);
+
+    }
+
 }
