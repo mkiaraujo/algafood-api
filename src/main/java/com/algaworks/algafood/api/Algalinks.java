@@ -276,7 +276,8 @@ public class Algalinks {
         var filtroVariables = new TemplateVariables(
                 new TemplateVariable("restauranteId", TemplateVariable.VariableType.REQUEST_PARAM),
                 new TemplateVariable("dataCriacaoInicio", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("dataCriacaoFim", TemplateVariable.VariableType.REQUEST_PARAM)
+                new TemplateVariable("dataCriacaoFim", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("timeOffset", TemplateVariable.VariableType.REQUEST_PARAM)
         );
 
 
