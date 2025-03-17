@@ -35,6 +35,7 @@ public class CidadeController {
     @Autowired
     private CidadeInputDisassembler cidadeInputDisassembler;
 
+    @Deprecated
     @GetMapping
     public CollectionModel<CidadeModel> listar() {
         var todasCidades = cidadeRepository.findAll();
