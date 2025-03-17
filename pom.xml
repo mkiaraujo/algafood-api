@@ -124,6 +124,10 @@
 			<artifactId>logback-ext-loggly</artifactId>
 			<version>${logback-ext-loggly.versio}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
     </dependencies>
 
 	<build>
