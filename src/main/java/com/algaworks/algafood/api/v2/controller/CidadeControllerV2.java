@@ -42,6 +42,7 @@ public class CidadeControllerV2 {
        return cidadeModelAssembler.toCollectionModel(todasCidades);
     }
 
+    @Deprecated
     @GetMapping("/{cidadeId}")
     public CidadeModelV2 buscar(@PathVariable Long cidadeId) {
        return cidadeModelAssembler.toModel(cadastroCidadeService.buscarOuFalhar(cidadeId));
