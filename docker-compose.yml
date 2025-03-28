@@ -26,13 +26,11 @@ services:
       start_period: 30s
 
   algafood-api:
-    image: mkiaraujo/algafood-api
+    image: algafood-api
     environment:
       DB_HOST: ${DB_HOST}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "8080:8080"
     networks:
       - algafood-network
     depends_on:
