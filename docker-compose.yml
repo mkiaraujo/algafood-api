@@ -25,6 +25,14 @@ services:
       retries: 5
       start_period: 30s
 
+  algafood-redis:
+    image: redis:7.4.2-alpine
+    networks:
+      - algafood-network
+    depends_on:
+      algafood-api:
+        condition: service_started
+
   algafood-api:
     image: algafood-api
     environment:
