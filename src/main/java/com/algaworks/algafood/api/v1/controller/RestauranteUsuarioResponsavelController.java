@@ -4,6 +4,7 @@ package com.algaworks.algafood.api.v1.controller;
 import com.algaworks.algafood.api.v1.Algalinks;
 import com.algaworks.algafood.api.v1.assembler.UsuarioModelAssembler;
 import com.algaworks.algafood.api.v1.model.UsuarioModel;
+import com.algaworks.algafood.api.v1.openapi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/v1/restaurantes/{restauranteId}/responsaveis", produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestauranteUsuarioResponsavelController {
+public class RestauranteUsuarioResponsavelController implements RestauranteUsuarioResponsavelControllerOpenApi {
 
     @Autowired
     private CadastroRestauranteService cadastroRestauranteService;
@@ -26,6 +27,7 @@ public class RestauranteUsuarioResponsavelController {
     private Algalinks algalinks;
 
     @GetMapping
+    @Override
     public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId){
         var restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
         var usuariosModel = usuarioModelAssembler.toCollectionModel(restaurante.getResponsaveis())
@@ -44,6 +46,7 @@ public class RestauranteUsuarioResponsavelController {
 
     @PutMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Override
     public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId){
         cadastroRestauranteService.associarUsuario(restauranteId, usuarioId);
 
@@ -52,6 +55,7 @@ public class RestauranteUsuarioResponsavelController {
 
     @DeleteMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Override
     public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
         cadastroRestauranteService.desassociarUsuario(restauranteId, usuarioId);
 

@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.v1.assembler.PedidoResumoModelAssembler;
 import com.algaworks.algafood.api.v1.model.PedidoModel;
 import com.algaworks.algafood.api.v1.model.PedidoResumoModel;
 import com.algaworks.algafood.api.v1.model.input.PedidoInput;
+import com.algaworks.algafood.api.v1.openapi.controller.PedidoControllerOpenApi;
 import com.algaworks.algafood.core.data.PageWrapper;
 import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
@@ -30,7 +31,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping(path = "/v1/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
-public class PedidoController {
+public class PedidoController implements PedidoControllerOpenApi {
 
     @Autowired
     private PedidoRepository pedidoRepository;
@@ -49,9 +50,9 @@ public class PedidoController {
 
     @Autowired
     private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
-
     @GetMapping
-    public PagedModel<PedidoResumoModel> pesquisar(@PageableDefault(size = 10) Pageable pageable, PedidoFilter filtro){
+    @Override
+    public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable){
         var pageableTraduzido = traduzirPageable(pageable);
 
         var pedidosPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageableTraduzido);
@@ -82,12 +83,14 @@ public class PedidoController {
 //    }
 
     @GetMapping("/{codigoPedido}")
+    @Override
     public PedidoModel buscar(@PathVariable String codigoPedido) {
         return pedidoModelAssembler.toModel(emissaoPedidoService.buscarOuFalhar(codigoPedido));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Override
     public PedidoModel adicionar(@RequestBody @Valid PedidoInput pedidoInput){
         try {
             var novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);

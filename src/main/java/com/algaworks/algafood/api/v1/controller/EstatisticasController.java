@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.v1.controller;
 
 import com.algaworks.algafood.api.v1.Algalinks;
+import com.algaworks.algafood.api.v1.openapi.controller.EstatisticasControllerOpenApi;
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
 import com.algaworks.algafood.domain.service.VendaQueryService;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/v1/estatisticas", produces = MediaType.APPLICATION_JSON_VALUE)
-public class EstatisticasController {
+public class EstatisticasController implements EstatisticasControllerOpenApi {
 
     @Autowired
     private VendaQueryService vendaQueryService;
@@ -31,12 +32,14 @@ public class EstatisticasController {
     private Algalinks algalinks;
 
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
     public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro,
                                                     @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
         return vendaQueryService.consultarVendasDiarias(filtro, timeOffset);
     }
 
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
+    @Override
     public ResponseEntity<byte[]> consultarVendasDiariasPdf(VendaDiariaFilter filtro,
                                                     @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
 
@@ -52,6 +55,7 @@ public class EstatisticasController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
     public EstatisticasModel estatisticas() {
         var estatisticasModel = new EstatisticasModel();
         estatisticasModel.add(algalinks.linkToEstatisticasVendasDiarias("vendas-diarias"));

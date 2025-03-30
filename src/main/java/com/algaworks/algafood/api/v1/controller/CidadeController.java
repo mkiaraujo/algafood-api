@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.v1.assembler.CidadeInputDisassembler;
 import com.algaworks.algafood.api.v1.assembler.CidadeModelAssembler;
 import com.algaworks.algafood.api.v1.model.CidadeModel;
 import com.algaworks.algafood.api.v1.model.input.CidadeInput;
+import com.algaworks.algafood.api.v1.openapi.controller.CidadeControllerOpenApi;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
@@ -15,11 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/v1/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
-public class CidadeController {
+public class CidadeController implements CidadeControllerOpenApi {
 
     @SuppressWarnings("unused")
     @Autowired
@@ -37,6 +39,7 @@ public class CidadeController {
 
 
     @GetMapping
+    @Override
     public CollectionModel<CidadeModel> listar() {
         var todasCidades = cidadeRepository.findAll();
 
@@ -44,12 +47,14 @@ public class CidadeController {
     }
 
     @GetMapping("/{cidadeId}")
+    @Override
     public CidadeModel buscar(@PathVariable Long cidadeId) {
        return cidadeModelAssembler.toModel(cadastroCidadeService.buscarOuFalhar(cidadeId));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Override
     public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput){
         try {
             Cidade cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
@@ -65,6 +70,7 @@ public class CidadeController {
     }
 
     @PutMapping("/{cidadeId}")
+    @Override
     public CidadeModel atualizar(@PathVariable Long cidadeId, @RequestBody @Valid CidadeInput cidadeInput) {
         try {
             Cidade cidade = cadastroCidadeService.buscarOuFalhar(cidadeId);
@@ -77,8 +83,10 @@ public class CidadeController {
 
     @DeleteMapping("/{cidadeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long cidadeId){
+    @Override
+    public ResponseEntity<Void> remover(@PathVariable Long cidadeId) {
         cadastroCidadeService.excluir(cidadeId);
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -4,6 +4,7 @@ package com.algaworks.algafood.api.v1.controller;
 import com.algaworks.algafood.api.v1.assembler.FotoProdutoModelAssembler;
 import com.algaworks.algafood.api.v1.model.FotoProdutoModel;
 import com.algaworks.algafood.api.v1.model.input.FotoProdutoInput;
+import com.algaworks.algafood.api.v1.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
 import com.algaworks.algafood.core.storage.StorageProperties;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.FotoProduto;
@@ -27,7 +28,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/v1/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
-public class RestauranteProdutoFotoController {
+public class RestauranteProdutoFotoController implements RestauranteProdutoFotoControllerOpenApi {
 
     @Autowired
     private FotoStorageService fotoStorage;
@@ -45,18 +46,20 @@ public class RestauranteProdutoFotoController {
     private StorageProperties storageProperties;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
     public FotoProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         var fotoProduto = catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId);
         return fotoProdutoModelAssembler.toModel(fotoProduto);
     }
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Override
     public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
-                                          @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
+                                          @Valid FotoProdutoInput fotoProdutoInput, MultipartFile arquivo) throws IOException {
 
         Produto produto = cadastrarProdutoService.buscarOuFalhar(restauranteId, produtoId);
 
-        MultipartFile arquivo = fotoProdutoInput.getArquivo();
+        arquivo = fotoProdutoInput.getArquivo();
 
         FotoProduto foto = new FotoProduto();
         foto.setProduto(produto);
@@ -71,11 +74,14 @@ public class RestauranteProdutoFotoController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping
-    public void excluir(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+    @Override
+    public ResponseEntity<Void> excluir(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         catalogoFotoProdutoService.excluir(restauranteId, produtoId);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
+    @Override
     public ResponseEntity<?> servirFoto(
             @PathVariable Long restauranteId,
             @PathVariable Long produtoId,

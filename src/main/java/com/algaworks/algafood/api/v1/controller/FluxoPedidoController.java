@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.v1.controller;
 
+import com.algaworks.algafood.api.v1.openapi.controller.FluxoPedidoControllerOpenApi;
 import com.algaworks.algafood.domain.service.FluxoPedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,13 +10,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/v1/pedidos/{codigoPedido}", produces = MediaType.APPLICATION_JSON_VALUE)
-public class FluxoPedidoController {
+public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
 
     @Autowired
     private FluxoPedidoService fluxoPedidoService;
 
     @PutMapping("/confirmacao")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Override
     public ResponseEntity<Void> confirmar(@PathVariable String codigoPedido){
         fluxoPedidoService.confirmar(codigoPedido);
 
@@ -24,6 +26,7 @@ public class FluxoPedidoController {
 
     @PutMapping("/entregue")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Override
     public ResponseEntity<Void> entregar(@PathVariable String codigoPedido){
         fluxoPedidoService.entregar(codigoPedido);
 
@@ -33,6 +36,7 @@ public class FluxoPedidoController {
 
     @PutMapping("/cancelamento")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Override
     public ResponseEntity<Void> cancelar(@PathVariable String codigoPedido){
         fluxoPedidoService.cancelar(codigoPedido);
 

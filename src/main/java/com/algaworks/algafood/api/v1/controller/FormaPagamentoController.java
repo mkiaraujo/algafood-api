@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.v1.assembler.FormaPagamentoInputDisassembler;
 import com.algaworks.algafood.api.v1.assembler.FormaPagamentoModelAssembler;
 import com.algaworks.algafood.api.v1.model.FormaPagamentoModel;
 import com.algaworks.algafood.api.v1.model.input.FormaPagamentoInput;
+import com.algaworks.algafood.api.v1.openapi.controller.FormaPagamentoControllerOpenApi;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.FormaPagamentoNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -25,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping(path = "/v1/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
-public class FormaPagamentoController {
+public class FormaPagamentoController implements FormaPagamentoControllerOpenApi {
 
     @Autowired
     private FormaPagamentoRepository formaPagamentoRepository;
@@ -41,6 +42,7 @@ public class FormaPagamentoController {
     private CadastrarFormaPagamentoService cadastrarFormaPagamentoService;
 
     @GetMapping
+    @Override
     public ResponseEntity<CollectionModel<FormaPagamentoModel>> listar(ServletWebRequest request){
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
@@ -68,6 +70,7 @@ public class FormaPagamentoController {
     }
 
     @GetMapping("/{formaPagamentoId}")
+    @Override
     public ResponseEntity<FormaPagamentoModel> buscar(@PathVariable Long formaPagamentoId, ServletWebRequest request){
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
@@ -93,6 +96,7 @@ public class FormaPagamentoController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
+    @Override
     public FormaPagamentoModel adicionar(@RequestBody @Valid FormaPagamentoInput formaPagamentoInput){
         try {
             FormaPagamento formaPagamento = formaPagamentoInputDisassembler.toDomainObject(formaPagamentoInput);
@@ -105,6 +109,7 @@ public class FormaPagamentoController {
     }
 
     @PutMapping("/{formaPagamentoId}")
+    @Override
     public FormaPagamentoModel atualizar(@PathVariable Long formaPagamentoId,
                                          @RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
         try {
@@ -119,7 +124,9 @@ public class FormaPagamentoController {
 
     @DeleteMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long formaPagamentoId){
+    @Override
+    public ResponseEntity<Void> remover(@PathVariable Long formaPagamentoId){
         cadastrarFormaPagamentoService.excluir(formaPagamentoId);
+        return ResponseEntity.noContent().build();
     }
 }
