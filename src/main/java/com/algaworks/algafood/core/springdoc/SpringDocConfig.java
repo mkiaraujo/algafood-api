@@ -9,7 +9,9 @@ import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.tags.Tag;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -63,6 +65,30 @@ public class SpringDocConfig {
                             new Tag().name("Estatísticas").description("Gerencia as estatísticas de vendas"),
                             new Tag().name("Root-entry-point").description("Gerencia todos os links dos serviços da API")
                     ));
+                })
+                .addOpenApiCustomizer(openApi -> {
+                    openApi.getPaths()
+                            .values()
+                            .stream()
+                            .flatMap(pathItem -> pathItem.readOperations().stream())
+                            .forEach(operation -> {
+                                var responses = operation.getResponses();
+
+                                var apiResponseRecursoNaoEncontrado =
+                                        new ApiResponse().description("Recurso não encontrado");
+
+                                var apiResponseSemRepresentacao =
+                                        new ApiResponse().description("Recurso não possui uma representação que " +
+                                                "poderia ser aceita pelo consumidor");
+
+                                var apiResponseErroInterno =
+                                        new ApiResponse().description("Erro interno no servidor");
+
+                                responses.addApiResponse("404", apiResponseRecursoNaoEncontrado);
+                                responses.addApiResponse("406", apiResponseSemRepresentacao);
+                                responses.addApiResponse("500", apiResponseErroInterno);
+
+                            });
                 })
                 .build();
     }
