@@ -69,26 +69,49 @@ public class SpringDocConfig {
                 .addOpenApiCustomizer(openApi -> {
                     openApi.getPaths()
                             .values()
-                            .stream()
-                            .flatMap(pathItem -> pathItem.readOperations().stream())
-                            .forEach(operation -> {
-                                var responses = operation.getResponses();
+                            .forEach(pathItem -> pathItem.readOperationsMap()
+                                    .forEach((httpMethod , operation) -> {
+                                        var responses = operation.getResponses();
+                                        switch (httpMethod){
+                                            case GET -> {
+                                                responses.addApiResponse("404",
+                                                        new ApiResponse().description("Recurso não encontrado"));
+                                                responses.addApiResponse("406",
+                                                        new ApiResponse().description("Recurso não possui " +
+                                                                "representação aceita pelo consumidor"));
+                                                responses.addApiResponse("500",
+                                                        new ApiResponse().description("Erro interno do servidor"));
+                                            }
+                                            case POST -> {
+                                                responses.addApiResponse("400",
+                                                        new ApiResponse().description("Requisição inválida"));
+                                                responses.addApiResponse("500",
+                                                        new ApiResponse().description("Erro interno do servidor"));
+                                            }
+                                            case PUT -> {
 
-                                var apiResponseRecursoNaoEncontrado =
-                                        new ApiResponse().description("Recurso não encontrado");
+                                                responses.addApiResponse("404",
+                                                        new ApiResponse().description("Recurso não encontrado"));
+                                                responses.addApiResponse("400",
+                                                        new ApiResponse().description("Requisição inválida"));
+                                                responses.addApiResponse("500",
+                                                        new ApiResponse().description("Erro interno do servidor"));
+                                            }
+                                            case DELETE -> {
+                                                responses.addApiResponse("404",
+                                                        new ApiResponse().description("Recurso não encontrado"));
+                                                responses.addApiResponse("500",
+                                                        new ApiResponse().description("Erro interno do servidor"));
+                                            }
+                                            default -> {
+                                                responses.addApiResponse("500",
+                                                        new ApiResponse().description("Erro interno do servidor"));
+                                            }
 
-                                var apiResponseSemRepresentacao =
-                                        new ApiResponse().description("Recurso não possui uma representação que " +
-                                                "poderia ser aceita pelo consumidor");
+                                        }
+                                    })
+                            );
 
-                                var apiResponseErroInterno =
-                                        new ApiResponse().description("Erro interno no servidor");
-
-                                responses.addApiResponse("404", apiResponseRecursoNaoEncontrado);
-                                responses.addApiResponse("406", apiResponseSemRepresentacao);
-                                responses.addApiResponse("500", apiResponseErroInterno);
-
-                            });
                 })
                 .build();
     }
