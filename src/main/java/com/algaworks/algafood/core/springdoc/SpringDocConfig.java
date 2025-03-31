@@ -9,9 +9,12 @@ import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.tags.Tag;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Arrays;
 
 @Configuration
 @SecurityScheme(name = "security_auth",
@@ -44,7 +47,22 @@ public class SpringDocConfig {
                     ).externalDocs(new ExternalDocumentation()
                             .description("AlgaWorks")
                             .url("https://algaworks.com")
-                    );
+                    ).tags(Arrays.asList(
+                            new Tag().name("Cidades").description("Gerencia as cidades"),
+                            new Tag().name("Usuários").description("Gerencia os usuários"),
+                            new Tag().name("Restaurantes").description("Gerencia os restaurantes"),
+                            new Tag().name("Produtos").description("Gerencia os produtos dos restaurantes"),
+                            new Tag().name("Formas-pagamento-restaurante").description("Gerencia as formas de pagamento dos restaurantes"),
+                            new Tag().name("Pedidos-restaurante").description("Gerencia os pedidos realizados aos restaurantes"),
+                            new Tag().name("Grupos").description("Gerencia os grupos e suas permissões"),
+                            new Tag().name("Formas-pagamento").description("Gerencia as formas de pagamento"),
+                            new Tag().name("Estados").description("Gerencia os estados"),
+                            new Tag().name("Cozinhas").description("Gerencia as cozinhas"),
+                            new Tag().name("Pedidos").description("Gerencia os pedidos"),
+                            new Tag().name("Permissões").description("Gerencia as permissões"),
+                            new Tag().name("Estatísticas").description("Gerencia as estatísticas de vendas"),
+                            new Tag().name("Root-entry-point").description("Gerencia todos os links dos serviços da API")
+                    ));
                 })
                 .build();
     }
