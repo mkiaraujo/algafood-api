@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
+
 public class ItemPedidoModel extends RepresentationModel<ItemPedidoModel> {
 
     private Long produtoId;

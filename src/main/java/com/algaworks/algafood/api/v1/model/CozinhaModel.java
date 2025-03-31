@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.v1.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
@@ -8,11 +9,14 @@ import org.springframework.hateoas.server.core.Relation;
 @Relation(collectionRelation = "cozinhas")
 @Getter
 @Setter
+@Schema(name = "CozinhaModel")
 public class CozinhaModel extends RepresentationModel<CozinhaModel> {
 
 //    @JsonView(RestauranteView.Resumo.class)
+    @Schema(example = "1")
     private Long id;
 
 //    @JsonView(RestauranteView.Resumo.class)
+    @Schema(example = "Cozinha Mineira")
     private String nome;
 }

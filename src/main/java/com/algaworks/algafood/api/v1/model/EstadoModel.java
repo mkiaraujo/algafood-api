@@ -9,6 +9,7 @@ import org.springframework.hateoas.server.core.Relation;
 @Relation(collectionRelation = "estados")
 @Getter
 @Setter
+@Schema(name = "EstadoModel")
 public class EstadoModel extends RepresentationModel<EstadoModel> {
 
     @Schema(example = "1")

@@ -7,6 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Schema(name = "EstadoIdInput")
 public class EstadoIdInput {
 
     @Schema(example = "1")

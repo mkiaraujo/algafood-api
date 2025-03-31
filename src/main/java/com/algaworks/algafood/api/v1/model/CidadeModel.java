@@ -9,6 +9,7 @@ import org.springframework.hateoas.server.core.Relation;
 @Relation(collectionRelation = "cidades")
 @Getter
 @Setter
+@Schema(name = "CidadeModel")
 public class CidadeModel extends RepresentationModel<CidadeModel> {
 
     @Schema(example = "1")
