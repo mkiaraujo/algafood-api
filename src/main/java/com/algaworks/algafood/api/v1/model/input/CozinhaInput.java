@@ -10,7 +10,7 @@ import lombok.Setter;
 @Schema(name = "CozinhaInput")
 public class CozinhaInput {
 
-    @Schema(example = "Cozinha Mineira")
+    @Schema(example = "Brasileira")
     @NotBlank
     private String nome;
 }

@@ -12,11 +12,9 @@ import org.springframework.hateoas.server.core.Relation;
 @Schema(name = "CozinhaModel")
 public class CozinhaModel extends RepresentationModel<CozinhaModel> {
 
-//    @JsonView(RestauranteView.Resumo.class)
     @Schema(example = "1")
     private Long id;
 
-//    @JsonView(RestauranteView.Resumo.class)
-    @Schema(example = "Cozinha Mineira")
+    @Schema(example = "Brasileira")
     private String nome;
 }
