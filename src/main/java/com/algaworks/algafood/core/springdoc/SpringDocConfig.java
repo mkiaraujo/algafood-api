@@ -2,9 +2,11 @@ package com.algaworks.algafood.core.springdoc;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v1.model.CidadeModel;
+import com.algaworks.algafood.api.v1.model.CozinhaModel;
 import com.algaworks.algafood.api.v1.model.EstadoModel;
 import com.algaworks.algafood.api.v1.model.GrupoModel;
 import com.algaworks.algafood.api.v1.model.input.CidadeInput;
+import com.algaworks.algafood.api.v1.model.input.CozinhaInput;
 import com.algaworks.algafood.api.v1.model.input.EstadoIdInput;
 import com.algaworks.algafood.api.v1.model.input.GrupoInput;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -172,6 +174,9 @@ public class SpringDocConfig {
         var grupoInputScrema = ModelConverters.getInstance().read(GrupoInput.class);
 
 
+        var cozinhaModelScrema = ModelConverters.getInstance().read(CozinhaModel.class);
+        var cozinhaInputScrema = ModelConverters.getInstance().read(CozinhaInput.class);
+
         var problemSchema = ModelConverters.getInstance().read(Problem.class);
         var problemObjectSchema = ModelConverters.getInstance().read(Problem.Object.class);
 
@@ -183,6 +188,8 @@ public class SpringDocConfig {
         schemaMap.putAll(estadoInputSchema);
         schemaMap.putAll(grupoModelScrema);
         schemaMap.putAll(grupoInputScrema);
+        schemaMap.putAll(cozinhaModelScrema);
+        schemaMap.putAll(cozinhaInputScrema);
 
         return schemaMap;
     }
