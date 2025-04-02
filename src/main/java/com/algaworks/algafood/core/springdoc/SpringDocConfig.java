@@ -114,7 +114,7 @@ public class SpringDocConfig {
                                             }
                                             case DELETE -> {
                                                 responses.addApiResponse("500",
-                                                        new ApiResponse().description("Erro interno do servidor"));
+                                                        new ApiResponse().$ref(INTERNAL_SERVER_ERROR_RESPONSE));
                                             }
                                             default -> {
                                                 responses.addApiResponse("500",
