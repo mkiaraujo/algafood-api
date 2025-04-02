@@ -7,7 +7,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 
 @SecurityRequirement(name = "security_auth")
-@Tag(name = "Grupos")
+@Tag(name = "Grupo-Permissoes")
 public interface GrupoPermissaoControllerOpenApi {
 
     CollectionModel<PermissaoModel> listar(Long grupoId);

@@ -17,11 +17,15 @@ import org.springframework.http.ResponseEntity;
 @Tag(name = "Cidades")
 public interface CidadeControllerOpenApi {
 
-    @Operation(summary = "Lista as cidades", description = "Lista todas as cidades cadastradas")
+    @Operation(summary = "Lista as cidades",
+            description = "Lista todas as cidades cadastradas", responses =
+            @ApiResponse(
+                responseCode = "200",
+                content = @Content(schema = @Schema(ref = "CidadeModel"))))
     CollectionModel<CidadeModel> listar();
 
-    @Operation(summary = "Busca uma cidade por id",
-            description = "Busca uma cidade informando um id válido", responses = {
+    @Operation(summary = "Busca uma cidade por ID",
+            description = "Busca uma cidade informando um ID válido", responses = {
             @ApiResponse(responseCode = "200"),
             @ApiResponse(responseCode = "400",
                     description = "ID da cidade inválido",
@@ -37,8 +41,8 @@ public interface CidadeControllerOpenApi {
     CidadeModel adicionar(
             @RequestBody(description = "Representação de uma nova cidade", required = true) CidadeInput cidadeInput);
 
-    @Operation(summary = "Atualiza uma cidade", description = "Atualiza uma cidade informando seu id " +
-            " e um objeto contendo novo nome da cidade e um estdo com seu id válido", responses = {
+    @Operation(summary = "Atualiza uma cidade", description = "Atualiza uma cidade informando seu ID " +
+            " e um objeto contendo novo nome da cidade e um estdo com seu ID válido", responses = {
             @ApiResponse(responseCode = "200"),
             @ApiResponse(responseCode = "400",
                     description = "ID da cidade inválido",
@@ -52,7 +56,7 @@ public interface CidadeControllerOpenApi {
             @RequestBody(description = "Representação de uma cidade com dados para atualizar", required = true)
             CidadeInput cidadeInput);
 
-    @Operation(summary = "Remove uma cidade pelo id", description = "Remove uma cidade informando um id válido",
+    @Operation(summary = "Remove uma cidade pelo ID", description = "Remove uma cidade informando um ID válido",
             responses = {
             @ApiResponse(responseCode = "204"),
             @ApiResponse(responseCode = "400",

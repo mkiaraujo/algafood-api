@@ -3,8 +3,10 @@ package com.algaworks.algafood.core.springdoc;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v1.model.CidadeModel;
 import com.algaworks.algafood.api.v1.model.EstadoModel;
+import com.algaworks.algafood.api.v1.model.GrupoModel;
 import com.algaworks.algafood.api.v1.model.input.CidadeInput;
 import com.algaworks.algafood.api.v1.model.input.EstadoIdInput;
+import com.algaworks.algafood.api.v1.model.input.GrupoInput;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.OAuthFlow;
@@ -74,7 +76,8 @@ public class SpringDocConfig {
                             new Tag().name("Produtos").description("Gerencia os produtos dos restaurantes"),
                             new Tag().name("Formas-pagamento-restaurante").description("Gerencia as formas de pagamento dos restaurantes"),
                             new Tag().name("Pedidos-restaurante").description("Gerencia os pedidos realizados aos restaurantes"),
-                            new Tag().name("Grupos").description("Gerencia os grupos e suas permissões"),
+                            new Tag().name("Grupos").description("Gerencia os grupos"),
+                            new Tag().name("Grupo-Permissoes").description("Gerencia as permissões dos grupos"),
                             new Tag().name("Formas-pagamento").description("Gerencia as formas de pagamento"),
                             new Tag().name("Estados").description("Gerencia os estados"),
                             new Tag().name("Cozinhas").description("Gerencia as cozinhas"),
@@ -159,14 +162,18 @@ public class SpringDocConfig {
     private Map<String, Schema> gerarSchemas() {
         final Map<String, Schema> schemaMap = new HashMap<>();
 
-        Map<String, Schema> cidadeModelSchema = ModelConverters.getInstance().read(CidadeModel.class);
-        Map<String, Schema> cidadeInputSchema = ModelConverters.getInstance().read(CidadeInput.class);
-        Map<String, Schema> estadoModelSchema = ModelConverters.getInstance().read(EstadoModel.class);
-        Map<String, Schema> estadoInputSchema = ModelConverters.getInstance().read(EstadoIdInput.class);
+        var cidadeModelSchema = ModelConverters.getInstance().read(CidadeModel.class);
+        var cidadeInputSchema = ModelConverters.getInstance().read(CidadeInput.class);
+
+        var estadoModelSchema = ModelConverters.getInstance().read(EstadoModel.class);
+        var estadoInputSchema = ModelConverters.getInstance().read(EstadoIdInput.class);
+
+        var grupoModelScrema = ModelConverters.getInstance().read(GrupoModel.class);
+        var grupoInputScrema = ModelConverters.getInstance().read(GrupoInput.class);
 
 
-        Map<String, Schema> problemSchema = ModelConverters.getInstance().read(Problem.class);
-        Map<String, Schema> problemObjectSchema = ModelConverters.getInstance().read(Problem.Object.class);
+        var problemSchema = ModelConverters.getInstance().read(Problem.class);
+        var problemObjectSchema = ModelConverters.getInstance().read(Problem.Object.class);
 
         schemaMap.putAll(problemSchema);
         schemaMap.putAll(problemObjectSchema);
@@ -174,6 +181,8 @@ public class SpringDocConfig {
         schemaMap.putAll(cidadeInputSchema);
         schemaMap.putAll(estadoModelSchema);
         schemaMap.putAll(estadoInputSchema);
+        schemaMap.putAll(grupoModelScrema);
+        schemaMap.putAll(grupoInputScrema);
 
         return schemaMap;
     }
