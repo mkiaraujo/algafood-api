@@ -1,14 +1,8 @@
 package com.algaworks.algafood.core.springdoc;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
-import com.algaworks.algafood.api.v1.model.CidadeModel;
-import com.algaworks.algafood.api.v1.model.CozinhaModel;
-import com.algaworks.algafood.api.v1.model.EstadoModel;
-import com.algaworks.algafood.api.v1.model.GrupoModel;
-import com.algaworks.algafood.api.v1.model.input.CidadeInput;
-import com.algaworks.algafood.api.v1.model.input.CozinhaInput;
-import com.algaworks.algafood.api.v1.model.input.EstadoIdInput;
-import com.algaworks.algafood.api.v1.model.input.GrupoInput;
+import com.algaworks.algafood.api.v1.model.*;
+import com.algaworks.algafood.api.v1.model.input.*;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.OAuthFlow;
@@ -51,6 +45,8 @@ public class SpringDocConfig {
     private static final String BAD_REQUEST_RESPONSE = "BadRequestResponse";
     private static final String NOT_FOUND_RESPONSE = "NotFoundResponse";
     private static final String NOT_ACCEPTABLE_RESPONSE = "NotAcceptableResponse";
+
+    private static final String CONFLIT_RESPONSE = "ConflitResponse";
     private static final String INTERNAL_SERVER_ERROR_RESPONSE = "InternalServerErrorResponse";
 
 
@@ -80,7 +76,7 @@ public class SpringDocConfig {
                             new Tag().name("Pedidos-restaurante").description("Gerencia os pedidos realizados aos restaurantes"),
                             new Tag().name("Grupos").description("Gerencia os grupos"),
                             new Tag().name("Grupo-Permissoes").description("Gerencia as permissões dos grupos"),
-                            new Tag().name("Formas-pagamento").description("Gerencia as formas de pagamento"),
+                            new Tag().name("Formas de pagamento").description("Gerencia as formas de pagamento"),
                             new Tag().name("Estados").description("Gerencia os estados"),
                             new Tag().name("Cozinhas").description("Gerencia as cozinhas"),
                             new Tag().name("Pedidos").description("Gerencia os pedidos"),
@@ -118,6 +114,8 @@ public class SpringDocConfig {
                                                         new ApiResponse().$ref(INTERNAL_SERVER_ERROR_RESPONSE));
                                             }
                                             case DELETE -> {
+                                                responses.addApiResponse("409",
+                                                        new ApiResponse().$ref(CONFLIT_RESPONSE));
                                                 responses.addApiResponse("500",
                                                         new ApiResponse().$ref(INTERNAL_SERVER_ERROR_RESPONSE));
                                             }
@@ -154,6 +152,10 @@ public class SpringDocConfig {
                 .description("Recurso não possui representação aceita pelo consumidor")
                 .content(content));
 
+        apiResponsesMap.put(CONFLIT_RESPONSE, new ApiResponse()
+                .description("Recurso em uso")
+                .content(content));
+
         apiResponsesMap.put(INTERNAL_SERVER_ERROR_RESPONSE, new ApiResponse()
                 .description("Erro interno do servidor")
                 .content(content));
@@ -170,12 +172,15 @@ public class SpringDocConfig {
         var estadoModelSchema = ModelConverters.getInstance().read(EstadoModel.class);
         var estadoInputSchema = ModelConverters.getInstance().read(EstadoIdInput.class);
 
-        var grupoModelScrema = ModelConverters.getInstance().read(GrupoModel.class);
-        var grupoInputScrema = ModelConverters.getInstance().read(GrupoInput.class);
+        var grupoModelSchema = ModelConverters.getInstance().read(GrupoModel.class);
+        var grupoInputSchema = ModelConverters.getInstance().read(GrupoInput.class);
 
 
-        var cozinhaModelScrema = ModelConverters.getInstance().read(CozinhaModel.class);
-        var cozinhaInputScrema = ModelConverters.getInstance().read(CozinhaInput.class);
+        var cozinhaModelSchema = ModelConverters.getInstance().read(CozinhaModel.class);
+        var cozinhaInputSchema = ModelConverters.getInstance().read(CozinhaInput.class);
+
+        var formaPagamentoModelSchema = ModelConverters.getInstance().read(FormaPagamentoModel.class);
+        var formaPagamentoInputSchema = ModelConverters.getInstance().read(FormaPagamentoInput.class);
 
         var problemSchema = ModelConverters.getInstance().read(Problem.class);
         var problemObjectSchema = ModelConverters.getInstance().read(Problem.Object.class);
@@ -186,10 +191,12 @@ public class SpringDocConfig {
         schemaMap.putAll(cidadeInputSchema);
         schemaMap.putAll(estadoModelSchema);
         schemaMap.putAll(estadoInputSchema);
-        schemaMap.putAll(grupoModelScrema);
-        schemaMap.putAll(grupoInputScrema);
-        schemaMap.putAll(cozinhaModelScrema);
-        schemaMap.putAll(cozinhaInputScrema);
+        schemaMap.putAll(grupoModelSchema);
+        schemaMap.putAll(grupoInputSchema);
+        schemaMap.putAll(cozinhaModelSchema);
+        schemaMap.putAll(cozinhaInputSchema);
+        schemaMap.putAll(formaPagamentoModelSchema);
+        schemaMap.putAll(formaPagamentoInputSchema);
 
         return schemaMap;
     }
