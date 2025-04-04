@@ -22,7 +22,7 @@ public interface FormaPagamentoControllerOpenApi {
             description = "Lista todas as formas de pagamento", responses = {
             @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(ref = "FormaPagamentoModel")))
     })
-    ResponseEntity<CollectionModel<FormaPagamentoModel>> listar(ServletWebRequest request);
+    ResponseEntity<CollectionModel<FormaPagamentoModel>> listar(@Parameter(hidden = true) ServletWebRequest request);
 
     @Operation(summary = "Busca uma forma de pagamento por ID",
             description = "Busca uma forma de pagamento passando um ID válido", responses = {
@@ -50,7 +50,7 @@ public interface FormaPagamentoControllerOpenApi {
     })
     FormaPagamentoModel atualizar(
             @Parameter(description = "Informe um ID", example = "1", required = true) Long formaPagamentoId,
-            @Parameter(description = "Representação de uma forma de pagamento com novos dados")
+            @Parameter(description = "Representação de uma forma de pagamento com novos dados", required = true)
             FormaPagamentoInput formaPagamentoInput);
 
     @Operation(summary = "Remove uma forma de pagamento",
