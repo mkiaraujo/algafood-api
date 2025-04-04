@@ -69,10 +69,10 @@ public class PedidoController implements PedidoControllerOpenApi {
                 "taxaFrete", "taxaFrete",
                 "valorTotal", "valorTotal",
                 "dataCriacao","dataCriacao",
-                "nomerestaurante", "restaurante.nome",
-                "restaurante.id", "restaurante.id",
-                "cliente.id", "cliente.id",
-                "cliente.nome", "cliente.nome"
+                "nomeRestaurante", "restaurante.nome",
+                "restauranteId", "restaurante.id",
+                "clienteId", "cliente.id",
+                "nomeCliente", "cliente.nome"
         );
         return PageableTranslator.translate(apiPageable, mapeamento);
     }

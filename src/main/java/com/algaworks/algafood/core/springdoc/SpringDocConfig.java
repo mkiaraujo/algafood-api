@@ -182,8 +182,11 @@ public class SpringDocConfig {
         var formaPagamentoModelSchema = ModelConverters.getInstance().read(FormaPagamentoModel.class);
         var formaPagamentoInputSchema = ModelConverters.getInstance().read(FormaPagamentoInput.class);
 
+        var pedidoResumoModelSchema = ModelConverters.getInstance().read(PedidoResumoModel.class);
+
         var problemSchema = ModelConverters.getInstance().read(Problem.class);
         var problemObjectSchema = ModelConverters.getInstance().read(Problem.Object.class);
+
 
         schemaMap.putAll(problemSchema);
         schemaMap.putAll(problemObjectSchema);
@@ -197,6 +200,7 @@ public class SpringDocConfig {
         schemaMap.putAll(cozinhaInputSchema);
         schemaMap.putAll(formaPagamentoModelSchema);
         schemaMap.putAll(formaPagamentoInputSchema);
+        schemaMap.putAll(pedidoResumoModelSchema);
 
         return schemaMap;
     }
