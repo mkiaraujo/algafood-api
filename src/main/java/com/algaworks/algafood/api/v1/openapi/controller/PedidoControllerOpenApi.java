@@ -31,10 +31,16 @@ public interface PedidoControllerOpenApi {
             @Parameter(hidden = true) PedidoFilter filtro, @Parameter(hidden = true) Pageable pageable);
 
     @Operation(summary = "Cadastra um novo pedido",
-            description = "Cadastra um novo pedido informando uma representação válida")
-    PedidoModel adicionar(PedidoInput pedidoInput);
+            description = "Cadastra um novo pedido informando uma representação válida", responses = {
+            @ApiResponse(responseCode = "201", description = "Pedido criado")
+    })
+    PedidoModel adicionar(@RequestBody(description = "Representação de um novo pedido", required = true) PedidoInput pedidoInput);
 
-    @Operation(summary = "Busca um pedido por ID", description = "Busca um pedido informando um ID válido")
-    PedidoModel buscar(String codigoPedido);
+    @Operation(summary = "Busca um pedido por código", description = "Busca um pedido informando um código válido", responses = {
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", description = "Código do pedido inválido",
+                    content = @Content(schema = @Schema(ref = "Problema"))),
+    })
+    PedidoModel buscar(@Parameter(description = "Código de um pedido", example = "f9981ca4-5a5e-4da3-af04-933861df3e55") String codigoPedido);
 
 }

@@ -168,9 +168,13 @@ public class SpringDocConfig {
 
         var cidadeModelSchema = ModelConverters.getInstance().read(CidadeModel.class);
         var cidadeInputSchema = ModelConverters.getInstance().read(CidadeInput.class);
+        var CidadeIdInputSchema = ModelConverters.getInstance().read(CidadeIdInput.class);
 
         var estadoModelSchema = ModelConverters.getInstance().read(EstadoModel.class);
         var estadoInputSchema = ModelConverters.getInstance().read(EstadoIdInput.class);
+
+        var enderecoModelSchema = ModelConverters.getInstance().read(EnderecoModel.class);
+        var enderecoInputSchema = ModelConverters.getInstance().read(EnderecoInput.class);
 
         var grupoModelSchema = ModelConverters.getInstance().read(GrupoModel.class);
         var grupoInputSchema = ModelConverters.getInstance().read(GrupoInput.class);
@@ -181,8 +185,19 @@ public class SpringDocConfig {
 
         var formaPagamentoModelSchema = ModelConverters.getInstance().read(FormaPagamentoModel.class);
         var formaPagamentoInputSchema = ModelConverters.getInstance().read(FormaPagamentoInput.class);
+        var formaPagamentoIdInputSchema = ModelConverters.getInstance().read(FormaPagamentoIdInput.class);
 
         var pedidoResumoModelSchema = ModelConverters.getInstance().read(PedidoResumoModel.class);
+        var pedidoModelSchema = ModelConverters.getInstance().read(PedidoModel.class);
+        var itemPedidoModelSchema = ModelConverters.getInstance().read(ItemPedidoModel.class);
+        var itemPedidoInputSchema = ModelConverters.getInstance().read(ItemPedidoInput.class);
+
+        var pedidoInputSchema = ModelConverters.getInstance().read(PedidoInput.class);
+        var restauranteIdInputSchema = ModelConverters.getInstance().read(RestauranteIdInput.class);
+
+        var restauranteApenasNomeModelSchema = ModelConverters.getInstance().read(RestauranteApenasNomeModel.class);
+        var usuarioModelSchema = ModelConverters.getInstance().read(UsuarioModel.class);
+
 
         var problemSchema = ModelConverters.getInstance().read(Problem.class);
         var problemObjectSchema = ModelConverters.getInstance().read(Problem.Object.class);
@@ -201,6 +216,17 @@ public class SpringDocConfig {
         schemaMap.putAll(formaPagamentoModelSchema);
         schemaMap.putAll(formaPagamentoInputSchema);
         schemaMap.putAll(pedidoResumoModelSchema);
+        schemaMap.putAll(restauranteApenasNomeModelSchema);
+        schemaMap.putAll(usuarioModelSchema);
+        schemaMap.putAll(enderecoModelSchema);
+        schemaMap.putAll(pedidoModelSchema);
+        schemaMap.putAll(itemPedidoModelSchema);
+        schemaMap.putAll(CidadeIdInputSchema);
+        schemaMap.putAll(enderecoInputSchema);
+        schemaMap.putAll(formaPagamentoIdInputSchema);
+        schemaMap.putAll(itemPedidoInputSchema);
+        schemaMap.putAll(pedidoInputSchema);
+        schemaMap.putAll(restauranteIdInputSchema);
 
         return schemaMap;
     }

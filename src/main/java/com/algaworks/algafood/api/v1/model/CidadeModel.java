@@ -18,5 +18,6 @@ public class CidadeModel extends RepresentationModel<CidadeModel> {
     @Schema(example = "Uberlândia")
     private String nome;
 
+    @Schema(description = "estado")
     private EstadoModel estado;
 }

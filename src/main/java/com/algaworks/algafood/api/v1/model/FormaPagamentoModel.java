@@ -19,6 +19,6 @@ public class FormaPagamentoModel extends RepresentationModel<FormaPagamentoModel
     private Long id;
 
     @NotBlank
-    @Schema(example = "Cartão")
+    @Schema(example = "Cartão de crédito")
     private String descricao;
 }
