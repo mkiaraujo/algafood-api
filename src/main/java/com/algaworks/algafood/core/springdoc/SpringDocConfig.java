@@ -71,6 +71,7 @@ public class SpringDocConfig {
                             new Tag().name("Cidades").description("Gerencia as cidades"),
                             new Tag().name("Usuários").description("Gerencia os usuários"),
                             new Tag().name("Restaurantes").description("Gerencia os restaurantes"),
+                            new Tag().name("Restaurantes produtos foto").description("Gerencia a foto dos produtos dos restaurantes"),
                             new Tag().name("Produtos").description("Gerencia os produtos dos restaurantes"),
                             new Tag().name("Formas-pagamento-restaurante").description("Gerencia as formas de pagamento dos restaurantes"),
                             new Tag().name("Pedidos-restaurante").description("Gerencia os pedidos realizados aos restaurantes"),
@@ -198,6 +199,7 @@ public class SpringDocConfig {
         var restauranteApenasNomeModelSchema = ModelConverters.getInstance().read(RestauranteApenasNomeModel.class);
         var usuarioModelSchema = ModelConverters.getInstance().read(UsuarioModel.class);
 
+        var fotoProdutoModelSchema = ModelConverters.getInstance().read(FotoProdutoModel.class);
 
         var problemSchema = ModelConverters.getInstance().read(Problem.class);
         var problemObjectSchema = ModelConverters.getInstance().read(Problem.Object.class);
@@ -227,6 +229,7 @@ public class SpringDocConfig {
         schemaMap.putAll(itemPedidoInputSchema);
         schemaMap.putAll(pedidoInputSchema);
         schemaMap.putAll(restauranteIdInputSchema);
+        schemaMap.putAll(fotoProdutoModelSchema);
 
         return schemaMap;
     }
